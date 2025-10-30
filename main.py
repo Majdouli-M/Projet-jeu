@@ -5,7 +5,6 @@ import ctypes
 import game_state
 import items_data
 import rooms_data
-import generation
 
 # --- Initialisation de Pygame ---
 pygame.init()
@@ -176,6 +175,11 @@ def draw_inventory(surface, font, inventory_data):
         
         # 4. Dessine le texte sur l'écran
         surface.blit(text_surface, (start_x, y_pos))
+        
+def tirer_valeurs_aleatoires(liste, n):
+    valeurs_tirees = [random.choice(liste) for _ in range(n)]
+    return valeurs_tirees
+    
 
 # --- Boucle principale du jeu ---
 running = True
