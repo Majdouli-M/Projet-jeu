@@ -1,9 +1,9 @@
 # Fichier: game_state.py
 
-# --- Données du Joueur ---
+# --- Donnï¿½es du Joueur ---
 
 # L'inventaire du joueur
-# On peut utiliser un dictionnaire pour stocker l'ID de l'objet et sa quantité
+# On peut utiliser un dictionnaire pour stocker l'ID de l'objet et sa quantitï¿½
 # Exemple: {"pot_S": 3, "cle_rouillee": 1}
 inventory = {
 			"Pas":70,
@@ -15,7 +15,7 @@ inventory = {
 
 }
 
-# La position actuelle du joueur (sera mise à jour par main.py)
+# La position actuelle du joueur (sera mise ï¿½ jour par main.py)
 player_x = 2
 player_y = 8
 
@@ -29,7 +29,7 @@ map_grid = [["0" for x in range(GRID_WIDTH)] for y in range(GRID_HEIGHT)]
 
 
 # --- Initialisation de la carte ---
-# Maintenant, on place manuellement les pièces de départ.
+# Maintenant, on place manuellement les piï¿½ces de dï¿½part.
 # C'est ici que vous construisez votre "monde".
 
 map_grid[8][2] = "r2"
