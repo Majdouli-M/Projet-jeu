@@ -5,6 +5,7 @@ import ctypes
 import game_state
 import items_data
 import rooms_data
+import generation
 
 # --- Initialisation de Pygame ---
 pygame.init()
