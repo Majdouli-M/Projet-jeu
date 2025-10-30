@@ -1,7 +1,3 @@
-import numpy as np
-
-
-
 class Room:
     #("name",item_pool,rarity,price)
 
@@ -23,11 +19,11 @@ rooms = {
         rarity=999,
         price=0,
         directions=["up", "left", "right"],
-        portes=np.array([
+        portes=[
             [' ', '#', ' '],
             ['#', ' ', '#'],
             [' ', ' ', ' ']
-        ], dtype=str)
+        ]
     ),
 
     "r9": Room(
@@ -37,11 +33,11 @@ rooms = {
         rarity=1,
         price=1,
         directions=["down"],
-        portes=np.array([
+        portes=[
             [' ', ' ', ' '],
             [' ', ' ', ' '],
             [' ', '#', ' ']
-        ], dtype=str)
+        ]
     ),
 
     "r10": Room(
@@ -51,11 +47,11 @@ rooms = {
         rarity=1,
         price=1,
         directions=["down"],
-        portes=np.array([
+        portes=[
             [' ', ' ', ' '],
             [' ', ' ', ' '],
             [' ', '#', ' ']
-        ], dtype=str)
+        ]
     ),
 
     "r11": Room(
@@ -65,11 +61,11 @@ rooms = {
         rarity=3,
         price=3,
         directions=["down"],
-        portes=np.array([
+        portes=[
             [' ', ' ', ' '],
             [' ', ' ', ' '],
             [' ', '#', ' ']
-        ], dtype=str)
+        ]
     ),
 
     "r12": Room(
@@ -79,11 +75,11 @@ rooms = {
         rarity=0,
         price=0,
         directions=["down"],
-        portes=np.array([
+        portes=[
             [' ', ' ', ' '],
             [' ', ' ', ' '],
             [' ', '#', ' ']
-        ], dtype=str)
+        ]
     ),
 
     "b1": Room(
@@ -93,11 +89,11 @@ rooms = {
         rarity=0,
         price=0,
         directions=["down", "left"],
-        portes=np.array([
+        portes=[
             [' ', ' ', ' '],
             ['#', ' ', ' '],
             [' ', '#', ' ']
-        ], dtype=str)
+        ]
     ),
 
     "b2": Room(
@@ -107,11 +103,11 @@ rooms = {
         rarity=1,
         price=0,
         directions=["down", "left"],
-        portes=np.array([
+        portes=[
             [' ', ' ', ' '],
             ['#', ' ', ' '],
             [' ', '#', ' ']
-        ], dtype=str)
+        ]
     ),
 
     "b5": Room(
@@ -121,11 +117,11 @@ rooms = {
         rarity=3,
         price=2,
         directions=["down"],
-        portes=np.array([
+        portes=[
             [' ', ' ', ' '],
             [' ', ' ', ' '],
             [' ', '#', ' ']
-        ], dtype=str)
+        ]
     ),
 
     "g4": Room(
@@ -135,11 +131,11 @@ rooms = {
         rarity=2,
         price=3,
         directions=["down", "up", "left", "right"],
-        portes=np.array([
+        portes=[
             [' ', '#', ' '],
             ['#', ' ', '#'],
             [' ', '#', ' ']
-        ], dtype=str)
+        ]
     ),
 
     "g5": Room(
@@ -149,11 +145,11 @@ rooms = {
         rarity=2,
         price=2,
         directions=["down", "up"],
-        portes=np.array([
+        portes=[
             [' ', '#', ' '],
             [' ', ' ', ' '],
             [' ', '#', ' ']
-        ], dtype=str)
+        ]
     ),
 
     "h1": Room(
@@ -163,11 +159,11 @@ rooms = {
         rarity=0,
         price=0,
         directions=["down"],
-        portes=np.array([
+        portes=[
             [' ', ' ', ' '],
             [' ', ' ', ' '],
             [' ', '#', ' ']
-        ], dtype=str)
+        ]
     ),
 
     "h4": Room(
@@ -177,11 +173,11 @@ rooms = {
         rarity=0,
         price=0,
         directions=["down", "up"],
-        portes=np.array([
+        portes=[
             [' ', '#', ' '],
             [' ', ' ', ' '],
             [' ', '#', ' ']
-        ], dtype=str)
+        ]
     ),
 
     "r45": Room(
@@ -191,10 +187,10 @@ rooms = {
         rarity=999,
         price=0,
         directions=["down", "up"],
-        portes=np.array([
+        portes=[
             [' ', '#', ' '],
             [' ', ' ', ' '],
             [' ', '#', ' ']
-        ], dtype=str)
+        ]
     ),
 }
