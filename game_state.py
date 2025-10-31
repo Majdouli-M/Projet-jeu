@@ -8,7 +8,7 @@
 inventory = {
 			"Pas":70,
 			"Pieces":0,
-			"Gemmes":0,
+			"Gemmes":2,
 			"Cles":0,
 			"Des":0,
             "Items permanents":[]
