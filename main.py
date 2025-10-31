@@ -99,8 +99,14 @@ else:
 
 def draw_grid(loaded_images_dict):
     """
-    Dessine la grille en lisant game_state.map_grid.
-    (Plus besoin de 'visited_coords'!)
+    Dessine la grille du jeu à l'écran en fonction de l'état actuel de la carte.
+
+    Args:
+        loaded_images_dict (dict): Dictionnaire associant les noms d'images à leurs surfaces Pygame.
+    
+    Description:
+        - Parcourt chaque case de la grille (game_state.map_grid)
+        - Affiche l'image correspondant à l'ID de la pièce si elle existe
     """
     for y in range(game_state.GRID_HEIGHT):
         for x in range(game_state.GRID_WIDTH):
@@ -120,7 +126,15 @@ def draw_grid(loaded_images_dict):
                     screen.blit(image_surface, (x * CELL_SIZE, y * CELL_SIZE))
 
 def draw_player_and_indicator(px, py, direction):
-    """Dessine le joueur (outline) où l'arête sélectionnée est plus épaisse."""
+    """
+    Dessine le contour du joueur sur la grille et met en surbrillance
+    la direction sélectionnée. 
+
+    Args:
+        px (int): position X du joueur dans la grille
+        py (int): position Y du joueur dans la grille
+        direction (tuple[int, int]): vecteur de direction choisi (ex: (1, 0) pour droite)
+    """
     default_thickness = 2
     selected_thickness = 8
     player_rect = pygame.Rect(px * CELL_SIZE, py * CELL_SIZE, CELL_SIZE, CELL_SIZE)
@@ -148,12 +162,15 @@ def draw_player_and_indicator(px, py, direction):
 
 def draw_inventory(surface, font, inventory_data):
     """
-    Dessine l'inventaire (statistiques) du joueur sur la surface de l'interface.
-    
+    Dessine les informations d'inventaire du joueur sur la partie droite de l'écran.
+
     Args:
-        surface: L'écran principal (screen)
-        font: L'objet pygame.font.Font à utiliser (text_font)
-        inventory_data: Le dictionnaire game_state.inventory
+        surface (pygame.Surface): surface principale où dessiner
+        font (pygame.font.Font): police utilisée pour le texte
+        inventory_data (dict): dictionnaire contenant les statistiques du joueur
+
+    Exemple:
+        inventory_data = {"Pas": 70, "Pièces": 5}
     """
     
     # Position de départ pour dessiner (coin haut-gauche de l'UI + marge)
@@ -175,9 +192,39 @@ def draw_inventory(surface, font, inventory_data):
         
         # 4. Dessine le texte sur l'écran
         surface.blit(text_surface, (start_x, y_pos))
-        
+
 def tirer_valeurs_aleatoires(liste, n):
+
+    """
+    Tire aléatoirement n éléments d'une liste donnée (avec répétition possible).
+
+    Args:
+        liste (list): liste source
+        n (int): nombre d'éléments à tirer
+
+    Returns:
+        list: liste de n éléments choisis au hasard
+    """
+
     valeurs_tirees = [random.choice(liste) for _ in range(n)]
+    return valeurs_tirees
+
+def tirer_avec_rarity(liste, rarity, n):
+
+    """ Tire aléatoirement n éléments d'une liste donnée (avec répétition possible).
+
+    Args:
+        liste (list): liste source
+        n (int): nombre d'éléments à tirer
+
+    Returns:
+        list: liste de n éléments choisis au hasard."""
+   
+    # On inverse la rareté pour obtenir un poids (1 = très commun)
+    poids = [r for r in rarity]  
+    
+    # On tire n valeurs pondérées
+    valeurs_tirees = random.choices(liste, weights=poids, k=n)
     return valeurs_tirees
     
 
