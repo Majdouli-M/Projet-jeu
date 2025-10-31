@@ -22,7 +22,7 @@ except AttributeError:
 
 # --- Constantes ---
 # MODIFIÉ: Renommage pour plus de clarté
-GRID_PIXEL_WIDTH = 900  # Largeur de la zone de jeu (votre ancien DISPLAY_WIDTH)
+GRID_PIXEL_WIDTH = 400 # Largeur de la zone de jeu (votre ancien DISPLAY_WIDTH)
 
 GRID_WIDTH = 5
 GRID_HEIGHT = 9
