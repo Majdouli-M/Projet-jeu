@@ -22,7 +22,7 @@ except AttributeError:
 
 # --- Constantes ---
 # MODIFIÉ: Renommage pour plus de clarté
-GRID_PIXEL_WIDTH = 900  # Largeur de la zone de jeu (votre ancien DISPLAY_WIDTH)
+GRID_PIXEL_WIDTH = 450  # Largeur de la zone de jeu (votre ancien DISPLAY_WIDTH)
 
 GRID_WIDTH = 5
 GRID_HEIGHT = 9
@@ -314,6 +314,48 @@ def tirer_avec_rarity(liste, rarity, n):
     valeurs_tirees = random.choices(liste, weights=poids, k=n)
     return valeurs_tirees
 
+import numpy as np
+
+def aligner_matB_avec_matA(A, B, dir):
+    """
+    Aligne la matrice B par rapport à la matrice A sur le bord choisi (bords uniquement).
+    
+    Paramètres :
+        A : np.array, matrice principale
+        B : np.array, matrice à orienter
+        dir : direction du bord de A à comparer
+              0 = haut, 1 = bas, 2 = gauche, 3 = droite
+    
+    Retour :
+        B_rot : matrice B orientée pour que le bord corresponde à A
+    """
+    if dir not in [0, 1, 2, 3]:
+        raise ValueError("dir doit être 0, 1, 2 ou 3")
+    
+    B_rot = B.copy()
+    
+    for _ in range(4):
+        # Extraire la ligne ou colonne de B selon la direction
+        if dir == 0:  # haut
+            bord_B = B_rot[-1, :]        # ligne du bas de B
+            target = A[0, :]
+        elif dir == 1:  # bas
+            bord_B = B_rot[0, :]         # ligne du haut de B
+            target = A[-1, :]
+        elif dir == 2:  # gauche
+            bord_B = B_rot[:, -1]        # colonne droite de B
+            target = A[:, 0]
+        elif dir == 3:  # droite
+            bord_B = B_rot[:, 0]         # colonne gauche de B
+            target = A[:, -1]
+
+        if np.array_equal(bord_B, target):
+            break
+        
+        # Rotation horaire 90°
+        B_rot = np.rot90(B_rot, k=-1)
+    
+    return B_rot
 
 
 
