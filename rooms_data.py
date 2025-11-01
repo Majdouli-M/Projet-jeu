@@ -1,15 +1,29 @@
 
 import items_data
+from images_initialisation import loaded_images,loaded_ui_images
+
+
+
 class Room:
     #("name",item_pool,rarity,price)
 
-    def __init__(self, name, resource_pool, special_pool, rarity, price, portes):
+    def __init__(self, name, resource_pool, special_pool, rarity, price, portes,image):
         self.name = name
         self.resource_pool = resource_pool
         self.special_pool = special_pool
         self.rarity = rarity
         self.price = price
         self.portes = portes
+        self.image = image
+
+
+
+
+
+
+
+
+
 
 rooms = {
     "r2": Room(
@@ -22,7 +36,8 @@ rooms = {
             [' ', '#', ' '],
             ['#', ' ', '#'],
             [' ', '#', ' ']
-        ]
+        ],
+        image=loaded_images["r2.png"]
     ),
 
     "r9": Room(
@@ -44,7 +59,9 @@ rooms = {
             [' ', ' ', ' '],
             [' ', ' ', ' '],
             [' ', '#', ' ']
-        ]
+        ],
+        image=loaded_images["r9.png"]
+
     ),
 
     "r10": Room(
@@ -66,7 +83,9 @@ rooms = {
             [' ', ' ', ' '],
             [' ', ' ', ' '],
             [' ', '#', ' ']
-        ]
+        ],
+        image=loaded_images["r10.png"]
+
     ),
 
     "r11": Room(
@@ -85,7 +104,9 @@ rooms = {
             [' ', ' ', ' '],
             [' ', ' ', ' '],
             [' ', '#', ' ']
-        ]
+        ],
+        image=loaded_images["r11.png"]
+
     ),
 
     "r12": Room(
@@ -105,7 +126,9 @@ rooms = {
             [' ', ' ', ' '],
             [' ', ' ', ' '],
             [' ', '#', ' ']
-        ]
+        ],
+        image=loaded_images["r12.png"]
+
     ),
 
     "b1": Room(
@@ -124,7 +147,9 @@ rooms = {
             [' ', ' ', ' '],
             ['#', ' ', ' '],
             [' ', '#', ' ']
-        ]
+        ],
+        image=loaded_images["b1.png"]
+
     ),
 
     "b2": Room(
@@ -140,7 +165,9 @@ rooms = {
             [' ', ' ', ' '],
             ['#', ' ', ' '],
             [' ', '#', ' ']
-        ]
+        ],
+        image=loaded_images["b2.png"]
+
     ),
 
     "b5": Room(
@@ -158,7 +185,9 @@ rooms = {
             [' ', ' ', ' '],
             [' ', ' ', ' '],
             [' ', '#', ' ']
-        ]
+        ],
+        image=loaded_images["b5.png"]
+
     ),
 
     "g4": Room(
@@ -173,7 +202,9 @@ rooms = {
             [' ', '#', ' '],
             ['#', ' ', '#'],
             [' ', '#', ' ']
-        ]
+        ],
+        image=loaded_images["g4.png"]
+
     ),
 
     "g5": Room(
@@ -191,7 +222,9 @@ rooms = {
             [' ', '#', ' '],
             [' ', ' ', ' '],
             [' ', '#', ' ']
-        ]
+        ],
+        image=loaded_images["g5.png"]
+
     ),
 
     "h1": Room(
@@ -208,7 +241,10 @@ rooms = {
             [' ', ' ', ' '],
             ['#', ' ', '#'],
             [' ', '#', ' ']
-        ]
+        ],
+
+        image=loaded_images["h1.png"]
+
     ),
 
     "h4": Room(
@@ -226,7 +262,10 @@ rooms = {
             [' ', '#', ' '],
             [' ', ' ', ' '],
             [' ', '#', ' ']
-        ]
+        ],
+
+        image=loaded_images["h4.png"]
+
     ),
 
     "r45": Room(
@@ -241,9 +280,12 @@ rooms = {
         price=0,
         portes=[
             [' ', '#', ' '],
-            ['#', ' ', '#'],
+            [' ', ' ', ' '],
             [' ', '#', ' ']
-        ]
+        ],
+
+        image=loaded_images["r45.png"]
+
     ),
 }
 
