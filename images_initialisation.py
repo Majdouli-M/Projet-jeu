@@ -12,7 +12,7 @@ pygame.display.set_caption("Jeu + Interface")
 
 IMAGE_FOLDER = 'rooms' 
 loaded_images = {}   #images de dimension cellule
-loaded_ui_images = {} #images de dimension inventaire (plus grand)
+
 print(f"Taille cible des cellules : {CELL_SIZE}x{CELL_SIZE} pixels")
 if os.path.exists(IMAGE_FOLDER):
     for filename in os.listdir(IMAGE_FOLDER):
@@ -21,13 +21,12 @@ if os.path.exists(IMAGE_FOLDER):
             try:
                 image_hires = pygame.image.load(path).convert_alpha()
                 image_scaled = pygame.transform.smoothscale(image_hires, (CELL_SIZE, CELL_SIZE))
-                image_ui_scaled = pygame.transform.smoothscale(image_hires, (INV_CELL_SIZE, INV_CELL_SIZE))
+                
                 loaded_images[filename] = image_scaled
-                loaded_ui_images[filename] = image_ui_scaled
 
 
 
-                print(f"Image chargée et redimensionnée: {filename}")
+                #print(f"Image chargée et redimensionnée: {filename}")
             except pygame.error as e:
                 print(f"Erreur de chargement de l'image {filename}: {e}")
 else:

@@ -1,6 +1,6 @@
 
 import items_data
-from images_initialisation import loaded_images,loaded_ui_images
+from images_initialisation import loaded_images
 
 
 

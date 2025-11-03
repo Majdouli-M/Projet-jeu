@@ -25,18 +25,22 @@ player_y = 8
 middle_map_pos = (950, 200)
 inventory_indicator_pos = 0
 intended_direction = (0, 0)
+build_target_coords = (0,0)
 rooms_on_offer = [] # NOUVEAU: Stocke les 3 ID de pièces proposées
 rooms_on_offer_mats = []
 rooms_on_offer_images = []
 
 inInventory = False
 
-
+temp_message = None #message affiché temporairement qd choix deplacement joueur impossible
+duree_temp_message = 0 # duree affichage
 
 
 map_grid = [["0" for x in range(GRID_WIDTH)] for y in range(GRID_HEIGHT)]
 
-map_grid_portes =  [[ [[' ', ' ', ' ]'],[' ', ' ', ' '],[' ', ' ', ' ']] for x in range(GRID_WIDTH)] for y in range(GRID_HEIGHT)]
+
+
+map_grid_portes =  [[ [[' ', ' ', ' ]'],[' ', ' ', ' '],[' ', ' ', ' ']] for x in range(GRID_WIDTH)] for y in range(GRID_HEIGHT)]  
 
 map_grid_images = [["" for x in range(GRID_WIDTH)] for y in range(GRID_HEIGHT)]
 

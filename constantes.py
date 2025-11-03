@@ -2,7 +2,7 @@ GRID_WIDTH = 5
 GRID_HEIGHT = 9
 # --- Constantes ---
 # MODIFIÉ: Renommage pour plus de clarté
-GRID_PIXEL_WIDTH = 600  # Largeur de la zone de jeu (votre ancien DISPLAY_WIDTH)
+GRID_PIXEL_WIDTH = 700  # Largeur de la zone de jeu (votre ancien DISPLAY_WIDTH)
 
 
 # CELL_SIZE est calculé à partir de la grille
