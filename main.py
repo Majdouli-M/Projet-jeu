@@ -47,6 +47,9 @@ except pygame.error:
 
 clock = pygame.time.Clock()
 
+# --- Initialisation des messages temporaires ---
+game_state.message_text = None
+game_state.message_until = 0
 
 
 
@@ -193,11 +196,19 @@ def draw_inventory(surface, font, inventory_data):
         
         # 4. Dessine le texte sur l'écran
         surface.blit(text_surface, (start_x, y_pos))
-    surface.blit(font.render(str(game_state.player_x),True,BLACK),((WINDOW_WIDTH - 300),WINDOW_HEIGHT-50)) #AFFICHAGE POSITION X
-    surface.blit(font.render(str(game_state.player_y),True,BLACK),((WINDOW_WIDTH - 300),WINDOW_HEIGHT-80)) #AFFICHAGE POSITION Y
-    surface.blit(font.render(str(game_state.intended_direction),True,BLACK),((WINDOW_WIDTH - 300),WINDOW_HEIGHT-110)) #AFFICHAGE intented_direction
-    surface.blit(font.render(str(game_state.inInventory),True,BLACK),((WINDOW_WIDTH - 300),WINDOW_HEIGHT-130)) #AFFICHAGE inInventory
-    surface.blit(font.render(str(game_state.inventory_indicator_pos),True,BLACK),((WINDOW_WIDTH - 300),WINDOW_HEIGHT-150)) #AFFICHAGE inventory_indicator_pos
+    #surface.blit(font.render(str(game_state.player_x),True,BLACK),((WINDOW_WIDTH - 300),WINDOW_HEIGHT-50)) #AFFICHAGE POSITION X
+    #surface.blit(font.render(str(game_state.player_y),True,BLACK),((WINDOW_WIDTH - 300),WINDOW_HEIGHT-80)) #AFFICHAGE POSITION Y
+    #surface.blit(font.render(str(game_state.intended_direction),True,BLACK),((WINDOW_WIDTH - 300),WINDOW_HEIGHT-110)) #AFFICHAGE intented_direction
+    #surface.blit(font.render(str(game_state.inInventory),True,BLACK),((WINDOW_WIDTH - 300),WINDOW_HEIGHT-130)) #AFFICHAGE inInventory
+    #surface.blit(font.render(str(game_state.inventory_indicator_pos),True,BLACK),((WINDOW_WIDTH - 300),WINDOW_HEIGHT-150)) #AFFICHAGE inventory_indicator_pos
+        # --- Affiche un message temporaire si défini ---
+    now = pygame.time.get_ticks()
+    if game_state.message_text and now <= game_state.message_until:
+        msg_surf = font.render(game_state.message_text, True, (0, 0, 0))
+        msg_rect = msg_surf.get_rect(center=(GRID_PIXEL_WIDTH + UI_PIXEL_WIDTH // 2, WINDOW_HEIGHT - 50))
+        screen.blit(msg_surf, msg_rect)
+    elif game_state.message_text and now > game_state.message_until:
+        game_state.message_text = None
 
     
 
@@ -232,7 +243,9 @@ def can_move(portes_joueur, portes_cible, direction):
         elif direction == (1, 0) and np.array_equal(portes_joueur[:, 2] , portes_cible[:, 0]) and np.array_equal(portes_cible[:, 0],[' ','#',' ']): # Droite
             return True
         
-        else:
+        else: # Affiche le message dans l'interface pendant 2500 ms (2.5 s)
+            game_state.message_text = "Il y a un mur ici, essayez une autre direction "
+            game_state.message_until = pygame.time.get_ticks() + 1500
             return False
             
     except Exception as e:
