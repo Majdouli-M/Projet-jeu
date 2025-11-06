@@ -8,6 +8,16 @@ import game_state
 import items_data
 import rooms_data
 import numpy as np
+
+"""
+Jeu de construction en grille utilisant Pygame.
+
+Ce script gère :
+- L'affichage du plateau de jeu (grille, joueur, interface)
+- Les déplacements du joueur
+- Le tirage aléatoire et la sélection de pièces à construire
+- L'inventaire et les statistiques du joueur
+"""
 # --- Initialisation de Pygame ---
 pygame.init()
 pygame.font.init()
@@ -85,7 +95,13 @@ def draw_grid():
 
 def draw_player_and_indicator(px, py, direction):
 
-
+    """
+    Dessine le contour représentant le joueur sur la grille.
+    Args:
+        px (int): Position du joueur en X (colonne)
+        py (int): Position du joueur en Y (ligne)
+        direction (tuple): Direction choisie par le joueur, ex. (1, 0) pour droite.
+    """
     if not(game_state.inInventory):
 
 
@@ -226,9 +242,16 @@ def draw_inventory(surface, font, inventory_data):
 
 def can_move(portes_joueur, portes_cible, direction):
 
-    """
-    Vérifie si les portes de deux matrices (NumPy) correspondent
-    pour une direction donnée.
+    """ Vérifie si le joueur peut se déplacer dans une direction donnée
+    en comparant les portes de deux pièces adjacentes.
+
+    Args:
+        portes_joueur (numpy.ndarray): Matrice 3x3 représentant les portes de la pièce actuelle.
+        portes_cible (numpy.ndarray): Matrice 3x3 représentant les portes de la pièce cible.
+        direction (tuple): Direction du déplacement (dx, dy).
+
+    Returns:
+        bool: True si le déplacement est possible, False sinon.
     """
     try:
         
@@ -258,14 +281,19 @@ def can_move(portes_joueur, portes_cible, direction):
 
 def tirage():
 
-    """ Tire aléatoirement 3 éléments d'une liste donnée (avec répétition possible).
+    """
+    Tire aléatoirement 3 pièces depuis la base de données des rooms,
+    en tenant compte de leur rareté et de la direction de construction.
 
-    Args:
-        liste (list): liste source
-        n (int): nombre d'éléments à tirer
+    La fonction vérifie la compatibilité des portes et applique
+    des rotations si nécessaire.
 
     Returns:
-        list: liste de n éléments choisis au hasard."""
+        tuple: (chosen_ids, chosen_ids_portes, chosen_ids_images)
+            - chosen_ids (list[str]): Identifiants des 3 pièces tirées.
+            - chosen_ids_portes (list[np.ndarray]): Matrices de portes correspondantes.
+            - chosen_ids_images (list[pygame.Surface]): Images Pygame des pièces.
+    """
    
     liste_ids = list(rooms_data.rooms.keys())
     
@@ -364,6 +392,13 @@ def tirage():
 
 
 # --- Boucle principale du jeu ---
+"""
+Boucle principale :
+- Gère les événements clavier (déplacement, inventaire)
+- Met à jour l'état du jeu
+- Dessine la grille, le joueur et l'interface utilisateur
+- Maintient un framerate constant.
+"""
 running = True
 print("Utilisez ZQSD pour choisir une direction.")
 print("Appuyez sur ESPACE pour vous déplacer dans cette direction.")
