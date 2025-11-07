@@ -11,8 +11,8 @@ from constantes import GRID_WIDTH,GRID_HEIGHT
 inventory = {
 			"Pas":70,
 			"Pieces":0,
-			"Gemmes":0,
-			"Cles":0,
+			"Gemmes":2,
+			"Cles":30,
 			"Des":0,
             "Items permanents":[]
 
@@ -29,6 +29,7 @@ build_target_coords = (0,0)
 rooms_on_offer = [] # NOUVEAU: Stocke les 3 ID de pièces proposées
 rooms_on_offer_mats = []
 rooms_on_offer_images = []
+porte_ouverte = False
 
 inInventory = False
 

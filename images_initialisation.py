@@ -4,6 +4,9 @@ from constantes import *
 
 
 
+os.environ['SDL_VIDEO_WINDOW_POS'] = "50,50"
+pygame.init()
+pygame.font.init()
 
 
 
