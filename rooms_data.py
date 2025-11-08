@@ -43,15 +43,15 @@ rooms = {
     "r9": Room(
         name="Closet",
         resource_pool=[
-            (2, items_data.resource_items[2].rarity_score, 1, 1),
-            (3, items_data.resource_items[3].rarity_score, 1, 1),
-            (4, items_data.resource_items[4].rarity_score, 1, 1)
+            (2, items_data.resource_items[2].rarity_score, 1),
+            (3, items_data.resource_items[3].rarity_score, 1),
+            (4, items_data.resource_items[4].rarity_score, 1)
         ],
         special_pool=[
-            (104, items_data.special_items[104].rarity_score, 0, 1),
-            (101, items_data.special_items[101].rarity_score, 0, 1),
-            (103, items_data.special_items[103].rarity_score, 0, 1),
-            (100, items_data.special_items[100].rarity_score, 0, 1)
+            (104, items_data.special_items[104].rarity_score, 1),
+            (101, items_data.special_items[101].rarity_score, 1),
+            (103, items_data.special_items[103].rarity_score, 1),
+            (100, items_data.special_items[100].rarity_score, 1)
         ],
         rarity=1,
         price=1,
@@ -67,15 +67,15 @@ rooms = {
     "r10": Room(
         name="Walk-in Closet",
         resource_pool=[
-            (7, items_data.resource_items[7].rarity_score, 1, 1),
-            (4, items_data.resource_items[4].rarity_score, 1, 2),
-            (3, items_data.resource_items[3].rarity_score, 1, 3),
-            (2, items_data.resource_items[2].rarity_score, 1, 2),
-            (11, items_data.resource_items[11].rarity_score, 1, 1)
+            (7, items_data.resource_items[7].rarity_score, 1),
+            (4, items_data.resource_items[4].rarity_score, 2),
+            (3, items_data.resource_items[3].rarity_score, 3),
+            (2, items_data.resource_items[2].rarity_score, 2),
+            (11, items_data.resource_items[11].rarity_score, 1)
         ],
         special_pool=[
-            (104, items_data.special_items[104].rarity_score, 0, 1),
-            (102, items_data.special_items[102].rarity_score, 0, 1)
+            (104, items_data.special_items[104].rarity_score, 1),
+            (102, items_data.special_items[102].rarity_score, 1)
         ],
         rarity=1,
         price=1,
@@ -91,12 +91,12 @@ rooms = {
     "r11": Room(
         name="Attic",
         resource_pool=[
-            (3, items_data.resource_items[3].rarity_score, 1, 5),
-            (2, items_data.resource_items[2].rarity_score, 1, 4)
+            (3, items_data.resource_items[3].rarity_score, 5),
+            (2, items_data.resource_items[2].rarity_score, 4)
         ],
         special_pool=[
-            (101, items_data.special_items[101].rarity_score, 0, 1),
-            (102, items_data.special_items[102].rarity_score, 0, 1)
+            (101, items_data.special_items[101].rarity_score, 1),
+            (102, items_data.special_items[102].rarity_score, 1)
         ],
         rarity=3,
         price=3,
@@ -112,13 +112,13 @@ rooms = {
     "r12": Room(
         name="Storeroom",
         resource_pool=[
-            (1, items_data.resource_items[1].rarity_score, 1, 1),
-            (2, items_data.resource_items[2].rarity_score, 1, 1),
-            (3, items_data.resource_items[3].rarity_score, 1, 1)
+            (1, items_data.resource_items[1].rarity_score, 1),
+            (2, items_data.resource_items[2].rarity_score, 1),
+            (3, items_data.resource_items[3].rarity_score, 1)
         ],
         special_pool=[
-            (101, items_data.special_items[101].rarity_score, 0, 1),
-            (100, items_data.special_items[100].rarity_score, 0, 1)
+            (101, items_data.special_items[101].rarity_score, 1),
+            (100, items_data.special_items[100].rarity_score, 1)
         ],
         rarity=0,
         price=0,
@@ -134,11 +134,11 @@ rooms = {
     "b1": Room(
         name="BedRoom",
         resource_pool=[
-            (3, items_data.resource_items[3].rarity_score, 1, 1),
-            (2, items_data.resource_items[2].rarity_score, 1, 1),
-            (4, items_data.resource_items[4].rarity_score, 1, 1),
-            (5, items_data.resource_items[5].rarity_score, 1, 1),
-            (12, items_data.resource_items[12].rarity_score, 1, 1)
+            (3, items_data.resource_items[3].rarity_score, 1),
+            (2, items_data.resource_items[2].rarity_score, 1),
+            (4, items_data.resource_items[4].rarity_score, 1),
+            (5, items_data.resource_items[5].rarity_score, 1),
+            (12, items_data.resource_items[12].rarity_score, 1)
         ],
         special_pool=[],
         rarity=0,
@@ -155,8 +155,8 @@ rooms = {
     "b2": Room(
         name="Boudoir",
         resource_pool=[
-            (9, items_data.resource_items[9].rarity_score, 1, 1),
-            (12, items_data.resource_items[12].rarity_score, 1, 1)
+            (9, items_data.resource_items[9].rarity_score, 1),
+            (12, items_data.resource_items[12].rarity_score, 1)
         ],
         special_pool=[],
         rarity=1,
@@ -173,11 +173,11 @@ rooms = {
     "b5": Room(
         name="Servant's Quarter",
         resource_pool=[
-            (2, items_data.resource_items[2].rarity_score, 1, 1),
-            (4, items_data.resource_items[4].rarity_score, 1, 2)
+            (2, items_data.resource_items[2].rarity_score, 1),
+            (4, items_data.resource_items[4].rarity_score, 2)
         ],
         special_pool=[
-            (100, items_data.special_items[100].rarity_score, 0, 1)
+            (100, items_data.special_items[100].rarity_score, 1)
         ],
         rarity=3,
         price=2,
@@ -193,7 +193,7 @@ rooms = {
     "g4": Room(
         name="Cloister",
         resource_pool=[
-            (10, items_data.resource_items[10].rarity_score, 1, 4)
+            (10, items_data.resource_items[10].rarity_score, 4)
         ],
         special_pool=[],
         rarity=2,
@@ -210,10 +210,10 @@ rooms = {
     "g5": Room(
         name="Veranda",
         resource_pool=[
-            (10, items_data.resource_items[10].rarity_score, 1, 4),
-            (2, items_data.resource_items[2].rarity_score, 1, 1),
-            (100, items_data.special_items[100].rarity_score, 1, 1),
-            (101, items_data.special_items[101].rarity_score, 1, 1)
+            (10, items_data.resource_items[10].rarity_score, 4),
+            (2, items_data.resource_items[2].rarity_score, 1),
+            (100, items_data.special_items[100].rarity_score, 1),
+            (101, items_data.special_items[101].rarity_score, 1)
         ],
         special_pool=[],
         rarity=2,
@@ -230,9 +230,9 @@ rooms = {
     "h1": Room(
         name="Hallway",
         resource_pool=[
-            (1, items_data.resource_items[1].rarity_score, 1, 1),
-            (2, items_data.resource_items[2].rarity_score, 1, 1),
-            (5, items_data.resource_items[5].rarity_score, 1, 1)
+            (1, items_data.resource_items[1].rarity_score, 1),
+            (2, items_data.resource_items[2].rarity_score, 1),
+            (5, items_data.resource_items[5].rarity_score, 1)
         ],
         special_pool=[],
         rarity=0,
@@ -250,10 +250,10 @@ rooms = {
     "h4": Room(
         name="Corridor",
         resource_pool=[
-            (1, items_data.resource_items[1].rarity_score, 1, 2),
-            (2, items_data.resource_items[2].rarity_score, 1, 1),
-            (3, items_data.resource_items[3].rarity_score, 1, 1),
-            (5, items_data.resource_items[5].rarity_score, 1, 1)
+            (1, items_data.resource_items[1].rarity_score, 2),
+            (2, items_data.resource_items[2].rarity_score, 1),
+            (3, items_data.resource_items[3].rarity_score, 1),
+            (5, items_data.resource_items[5].rarity_score, 1)
         ],
         special_pool=[],
         rarity=0,
@@ -271,17 +271,17 @@ rooms = {
     "r45": Room(
         name="Antechamber",
         resource_pool=[
-            (1, items_data.resource_items[1].rarity_score, 1, 1),
-            (2, items_data.resource_items[2].rarity_score, 1, 1),
-            (5, items_data.resource_items[5].rarity_score, 1, 1)
+            (1, items_data.resource_items[1].rarity_score, 1),
+            (2, items_data.resource_items[2].rarity_score, 1),
+            (5, items_data.resource_items[5].rarity_score, 1)
         ],
         special_pool=[],
         rarity=999,
         price=0,
         portes=[
-            [' ', '#', ' '],
-            [' ', ' ', ' '],
-            [' ', '#', ' ']
+            [' ', 'X', ' '],
+            ['X', ' ', 'X'],
+            [' ', 'X', ' ']
         ],
 
         image=loaded_images["r45.png"]

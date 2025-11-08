@@ -7,9 +7,8 @@ import game_state
 import items_data
 import rooms_data
 import numpy as np
-
+from collections import Counter
 clock = pygame.time.Clock()
-
 
 
 
@@ -22,7 +21,6 @@ Ce script gère :
 - Le tirage aléatoire et la sélection de pièces à construire
 - L'inventaire et les statistiques du joueur
 """
-
 
 
 # --- Bloc anti-flou (Inchangé) ---
@@ -55,14 +53,6 @@ except pygame.error:
 
 
 
-
-
-
-
-
-
-
-
 ##############################################################################################
 
 
@@ -76,7 +66,7 @@ except pygame.error:
 def draw_grid():
     """
     Dessine la grille en lisant game_state.map_grid.
-    (Plus besoin de 'visited_coords'!)
+
     """
     for y in range(GRID_HEIGHT):
         for x in range(GRID_WIDTH):
@@ -141,9 +131,7 @@ def draw_inventory_selection():
 
     """
     
-    
     # 1. Définir la géométrie
-    
  
     start_x = GRID_PIXEL_WIDTH + 0.5*INV_CELL_SIZE 
     ecart = 1.1
@@ -157,7 +145,9 @@ def draw_inventory_selection():
        
                 
         # Calcule la position Y de cette boîte (en utilisant ta logique)
-        current_y = WINDOW_HEIGHT - (3 + ecart*i) *INV_CELL_SIZE
+        offset_y = 30  # Décalage vertical vers le bas en pixels
+        current_y = WINDOW_HEIGHT - (3 + ecart * i) * INV_CELL_SIZE + offset_y
+
         
 
      
@@ -186,16 +176,13 @@ def draw_inventory_selection():
                 reroll_text = text_font.render("Reroll", True, RED) 
             screen.blit(reroll_text, (start_x, current_y))
 
-            
-
-
         
     
 
     # --- 3. Dessiner l'indicateur (la boîte grise) ---
     
     # Calcule la position Y de la boîte sélectionnée (selon ta logique)
-    cursor_y_pixel = WINDOW_HEIGHT - (3 + ecart*game_state.inventory_indicator_pos) * INV_CELL_SIZE
+    cursor_y_pixel = WINDOW_HEIGHT - (3 + ecart * game_state.inventory_indicator_pos) * INV_CELL_SIZE + offset_y
 
     thickness_selection = 7 # Augmenté pour la visibilité
     
@@ -204,6 +191,79 @@ def draw_inventory_selection():
 
         selection_rect = pygame.Rect(start_x, cursor_y_pixel, INV_CELL_SIZE, INV_CELL_SIZE)
         pygame.draw.rect(screen, RED, selection_rect, thickness_selection, border_radius=5)
+
+
+
+def draw_inventory_items():
+
+    start_x = GRID_PIXEL_WIDTH + 0.5 * INV_CELL_SIZE
+    ecart = 0.7
+    for i, item_id in enumerate(game_state.items_tirees):
+        current_y = WINDOW_HEIGHT - (0.7 + ecart * i) * INV_CELL_SIZE
+
+        # On suppose que item[0] contient l'ID ou le nom de l'objet
+        if item_id < 100:
+
+            item_name = items_data.resource_items[item_id].name
+        else:
+            item_name = items_data.special_items[item_id].name
+        # Crée la surface texte
+
+        if game_state.items_indicator_pos == i:
+
+            text_surface = text_font.render(item_name, True, RED)
+
+        else:
+            text_surface = text_font.render(item_name, True, BLACK)
+
+        
+        # Affiche le texte sur l'écran
+        screen.blit(text_surface, (start_x, current_y))
+
+    
+
+
+def tirage_items():
+
+    roomid = game_state.map_grid[game_state.player_y][game_state.player_x]
+    #(ID, rarity_score, min value, max value),
+    pool_resource = rooms_data.rooms[roomid].resource_pool
+    pool_special = rooms_data.rooms[roomid].special_pool
+
+    items_tirees = []
+
+    tirage_1_item = ["Oui","Non"]
+
+    for i in range(0,len(pool_resource)):
+
+        proba = [1,pool_resource[i][1]]
+
+        tirage = random.choices(tirage_1_item,weights=proba,k=pool_resource[i][2])
+
+        resultat = Counter(tirage)
+        nb = resultat.get("Oui",0)
+
+        for j in range(0,nb):
+
+            items_tirees.append(pool_resource[i][0])
+
+    for i in range(0,len(pool_special)):
+
+
+        proba = [1,pool_special[i][1]]
+
+        tirage = random.choices(tirage_1_item,weights=proba,k=pool_special[i][2])
+
+        resultat = Counter(tirage)
+        nb = resultat.get("Oui",0)
+
+        for j in range(0,nb):
+
+            items_tirees.append(pool_special[i][0])
+
+
+    return items_tirees    
+
 
 
 
@@ -218,7 +278,7 @@ def draw_inventory(surface, font, inventory_data):
     """
     
     # Position de départ pour dessiner (coin haut-gauche de l'UI + marge)
-    start_x = WINDOW_WIDTH - 300
+    start_x = WINDOW_WIDTH - 650
     start_y = 20
     line_height = 40 # Espace entre chaque ligne
     
@@ -253,8 +313,6 @@ def draw_inventory(surface, font, inventory_data):
         game_state.temp_message = None
 
             
-            
-
 
         
 def normaliser_portes(portes1):
@@ -265,9 +323,7 @@ def normaliser_portes(portes1):
     for y1,x1 in zip(lignes1,cols1): #on "normalise" la matrice avec les #
         portes1[y1,x1] = '#'
         
-    
-
-  
+     
 
 
 
@@ -285,8 +341,6 @@ def can_move(portes_joueur, portes_cible, direction):
     """
 
     try:
-        
-
 
         # On compare les tableaux, puis on vérifie si .all() (tous) sont True
         if direction == (0, -1) and np.array_equal(p_joueur_tampon[0, :] ,p_cible_tampon[2, :]) and np.array_equal(p_cible_tampon[2, :],[' ','#',' ']): # Haut
@@ -326,6 +380,7 @@ def bord_portes_joueur(matrice_portes,dir):
             # colonne gauche de B
         return matrice_portes[:, -1]
     
+    
 def ouvrir_portes(matrice_portes,dir):
 
     if dir == (0,-1):  # haut
@@ -341,7 +396,6 @@ def ouvrir_portes(matrice_portes,dir):
     elif dir == (1,0):  # droite
             # colonne gauche de B
         matrice_portes[:, -1] = [' ', '#',' ']
-
 
 
 
@@ -445,8 +499,6 @@ def tirage():
             
 
 
-
-
     return chosen_ids,chosen_ids_portes,chosen_ids_images
 
 """  #: porte ouverte
@@ -464,7 +516,6 @@ def tirage():
 
 
 def aleatoire_portes(matrice_portes,score_ouv,score_verr,score_dbverr):
-
 
     ligne = 0
     col = 0
@@ -486,7 +537,6 @@ def aleatoire_portes(matrice_portes,score_ouv,score_verr,score_dbverr):
 
     lignes,cols = np.where(matrice_portes== '#' )                
 
-    
 
     for y,x in zip(lignes,cols):
 
@@ -504,9 +554,6 @@ def aleatoire_portes(matrice_portes,score_ouv,score_verr,score_dbverr):
 
 
         
-
-
-
 
 def genere_portes(matrice_portes,y):
     
@@ -540,11 +587,9 @@ Boucle principale :
 - Maintient un framerate constant.
 """
 
-
 running = True
 print("Utilisez ZQSD pour choisir une direction.")
 print("Appuyez sur ESPACE pour vous déplacer dans cette direction.")
-
 
 
 while running:
@@ -555,7 +600,6 @@ while running:
             running = False
 
         
-
         if event.type == pygame.KEYDOWN :
                 
                     
@@ -597,7 +641,6 @@ while running:
                     
 
                         
-
                             
                     # 1. Récupère la pièce choisie dans l'inventaire
                     target_x, target_y = game_state.build_target_coords # Récupère les coords
@@ -644,9 +687,53 @@ while running:
                         print(chosen_room_id_portes)
                             # (On reste en mode inventaire pour choisir autre chose)
 
-                    # -----------------------------------------------------
-                    # CAS 2: Le joueur est sur la grille (mode déplacement)
-                    # -----------------------------------------------------
+
+
+            elif game_state.items_selection:
+
+                if len(game_state.items_tirees) == 0:
+
+                    game_state.items_selection = False
+                    break
+
+                 
+                if event.key == pygame.K_z:
+                    print("Curseur inventaire HAUT") 
+                    if game_state.items_indicator_pos > 0:
+
+                        game_state.items_indicator_pos -= 1
+                elif event.key == pygame.K_s:
+                    print("Curseur inventaire BAS") 
+                    if game_state.items_indicator_pos < (len(game_state.items_tirees)-1):
+
+                        game_state.items_indicator_pos += 1   
+                        # Le joueur VALIDE son choix de pièce
+
+                elif event.key == pygame.K_SPACE:
+
+                    chosen_item = game_state.items_tirees[game_state.items_indicator_pos]
+
+                    if chosen_item <= 4:
+                        game_state.inventory[items_data.resource_items[chosen_item].name+'s'] += 1
+                        
+                    elif chosen_item >= 5 and  chosen_item<= 9:
+                        game_state.inventory["Pas"] += items_data.resource_items[chosen_item].arg
+                        
+                    elif chosen_item >= 100:
+
+                       game_state.inventory["Items permanents"].append(items_data.special_items[chosen_item].name)
+                    game_state.items_tirees.remove(chosen_item)
+
+
+
+
+
+
+            # -----------------------------------------------------
+            # CAS 3: Le joueur est sur la grille (mode déplacement)
+            # -----------------------------------------------------
+
+
             else:
 
                     # ZQSD contrôle la direction du joueur
@@ -725,8 +812,6 @@ while running:
                                                     
                                        
                                             
-                                                    
-
                                             
                                         # Le joueur se déplace vers une pièce EXISTANTE
                                 else:
@@ -739,7 +824,9 @@ while running:
                                         if can_move(np.array(current_room_id_portes), np.array(target_room_id_portes), game_state.intended_direction):
                                             # Déplace le joueur
                                             game_state.player_x = new_x
-                                            game_state.player_y = new_y            
+                                            game_state.player_y = new_y
+
+          
                                     else:
                                         print("Pas assez de Pas")
 
@@ -773,15 +860,26 @@ while running:
     # 4. NOUVEAU: Dessine le rectangle blanc de l'interface à DROITE
     #    (x, y, largeur, hauteur)
     ui_rect = pygame.Rect(GRID_PIXEL_WIDTH, 0, UI_PIXEL_WIDTH, WINDOW_HEIGHT)
-    pygame.draw.rect(screen, WHITE, ui_rect)
-
-
+    RIGHT_UI_COLOR = (64, 224, 208)  # Turquoise doux
+    pygame.draw.rect(screen, RIGHT_UI_COLOR, ui_rect)
 
     draw_inventory(screen, text_font, game_state.inventory)
 
     if game_state.inInventory:
 
         draw_inventory_selection()
+
+    elif (game_state.player_y,game_state.player_x) not in game_state.visited_coords:
+        print("nouvelle map,tirage d'items")
+        game_state.items_selection = True
+        game_state.items_tirees = tirage_items()
+        game_state.visited_coords.append((game_state.player_y,game_state.player_x))
+    
+
+    if game_state.items_selection:
+
+        draw_inventory_items()
+
     # 5. Met à jour l'écran
     pygame.display.flip()
     
