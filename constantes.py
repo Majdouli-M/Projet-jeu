@@ -1,9 +1,8 @@
-
 GRID_WIDTH = 5
 GRID_HEIGHT = 9
 # --- Constantes ---
 # MODIFIÉ: Renommage pour plus de clarté
-GRID_PIXEL_WIDTH = 450  # Largeur de la zone de jeu (votre ancien DISPLAY_WIDTH)
+GRID_PIXEL_WIDTH = 700  # Largeur de la zone de jeu (votre ancien DISPLAY_WIDTH)
 
 
 # CELL_SIZE est calculé à partir de la grille
@@ -13,11 +12,12 @@ INV_CELL_SIZE = CELL_SIZE*1.5
 GRID_PIXEL_HEIGHT = CELL_SIZE * GRID_HEIGHT # (180 * 9 = 1620)
 
 # NOUVEAU: Largeur de la zone d'interface (identique à la grille)
-UI_PIXEL_WIDTH = GRID_PIXEL_WIDTH*1.6
+UI_PIXEL_WIDTH = GRID_PIXEL_WIDTH*1.2
 
 # NOUVEAU: Dimensions totales de la FENÊTRE
 WINDOW_WIDTH = GRID_PIXEL_WIDTH + UI_PIXEL_WIDTH # (900 + 900 = 1800)
 WINDOW_HEIGHT = GRID_PIXEL_HEIGHT # (Hauteur inchangée: 1620)
+
 
 
 # Couleurs (Inchangé)

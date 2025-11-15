@@ -12,6 +12,7 @@ clock = pygame.time.Clock()
 
 
 
+
 """
 Jeu de construction en grille utilisant Pygame.
 
@@ -21,6 +22,7 @@ Ce script gère :
 - Le tirage aléatoire et la sélection de pièces à construire
 - L'inventaire et les statistiques du joueur
 """
+
 
 
 # --- Bloc anti-flou (Inchangé) ---
@@ -43,6 +45,14 @@ except pygame.error:
     print("Police 'Arial' non trouvée, utilisation de la police par défaut.")
     title_font = pygame.font.Font(None, 40)
     text_font = pygame.font.Font(None, 34)
+
+
+
+
+
+
+
+
 
 
 
@@ -131,7 +141,9 @@ def draw_inventory_selection():
 
     """
     
+    
     # 1. Définir la géométrie
+    
  
     start_x = GRID_PIXEL_WIDTH + 0.5*INV_CELL_SIZE 
     ecart = 1.1
@@ -145,9 +157,7 @@ def draw_inventory_selection():
        
                 
         # Calcule la position Y de cette boîte (en utilisant ta logique)
-        offset_y = 30  # Décalage vertical vers le bas en pixels
-        current_y = WINDOW_HEIGHT - (3 + ecart * i) * INV_CELL_SIZE + offset_y
-
+        current_y = WINDOW_HEIGHT - (3 + ecart*i) *INV_CELL_SIZE
         
 
      
@@ -176,13 +186,16 @@ def draw_inventory_selection():
                 reroll_text = text_font.render("Reroll", True, RED) 
             screen.blit(reroll_text, (start_x, current_y))
 
+            
+
+
         
     
 
     # --- 3. Dessiner l'indicateur (la boîte grise) ---
     
     # Calcule la position Y de la boîte sélectionnée (selon ta logique)
-    cursor_y_pixel = WINDOW_HEIGHT - (3 + ecart * game_state.inventory_indicator_pos) * INV_CELL_SIZE + offset_y
+    cursor_y_pixel = WINDOW_HEIGHT - (3 + ecart*game_state.inventory_indicator_pos) * INV_CELL_SIZE
 
     thickness_selection = 7 # Augmenté pour la visibilité
     
@@ -192,14 +205,21 @@ def draw_inventory_selection():
         selection_rect = pygame.Rect(start_x, cursor_y_pixel, INV_CELL_SIZE, INV_CELL_SIZE)
         pygame.draw.rect(screen, RED, selection_rect, thickness_selection, border_radius=5)
 
-
-
 def draw_inventory_items():
-
     start_x = GRID_PIXEL_WIDTH + 0.5 * INV_CELL_SIZE
-    ecart = 0.7
+
+
+
+    title_y = WINDOW_HEIGHT - (4) * INV_CELL_SIZE
+
+    text_surface = text_font.render("Items found:", True, BLACK)
+    screen.blit(text_surface, (start_x, title_y))
+
+
+
+    ecart = 0.5
     for i, item_id in enumerate(game_state.items_tirees):
-        current_y = WINDOW_HEIGHT - (0.7 + ecart * i) * INV_CELL_SIZE
+        current_y = WINDOW_HEIGHT - (4 - ecart * (i+1)) * INV_CELL_SIZE
 
         # On suppose que item[0] contient l'ID ou le nom de l'objet
         if item_id < 100:
@@ -216,11 +236,18 @@ def draw_inventory_items():
         else:
             text_surface = text_font.render(item_name, True, BLACK)
 
+
+
+
         
         # Affiche le texte sur l'écran
         screen.blit(text_surface, (start_x, current_y))
 
+        
+
+
     
+
 
 
 def tirage_items():
@@ -229,40 +256,97 @@ def tirage_items():
     #(ID, rarity_score, min value, max value),
     pool_resource = rooms_data.rooms[roomid].resource_pool
     pool_special = rooms_data.rooms[roomid].special_pool
-
+    
+    min_items = rooms_data.rooms[roomid].min_items
+    max_items = random.randint(min_items,rooms_data.rooms[roomid].max_items)
+    min_special_items = rooms_data.rooms[roomid].min_special_items
     items_tirees = []
 
+    
     tirage_1_item = ["Oui","Non"]
 
-    for i in range(0,len(pool_resource)):
-
-        proba = [1,pool_resource[i][1]]
-
-        tirage = random.choices(tirage_1_item,weights=proba,k=pool_resource[i][2])
-
-        resultat = Counter(tirage)
-        nb = resultat.get("Oui",0)
-
-        for j in range(0,nb):
-
-            items_tirees.append(pool_resource[i][0])
-
-    for i in range(0,len(pool_special)):
 
 
-        proba = [1,pool_special[i][1]]
 
-        tirage = random.choices(tirage_1_item,weights=proba,k=pool_special[i][2])
 
-        resultat = Counter(tirage)
-        nb = resultat.get("Oui",0)
+    
 
-        for j in range(0,nb):
 
-            items_tirees.append(pool_special[i][0])
+    if min_special_items == -1 : #on impose pas un ou des items speciaux a la room 
+
+
+
+        for i in range(0,len(pool_special)):
+
+
+            proba = [1,pool_special[i][1]]
+
+            tirage = random.choices(tirage_1_item,weights=proba,k=pool_special[i][3])
+
+            resultat = Counter(tirage)
+            nb = resultat.get("Oui",0)
+
+            for _ in range(0,nb):
+                if (len(items_tirees) < max_items):
+
+                    items_tirees.append(pool_special[i][0])
+
+                else:
+                    break
+    else:
+        
+        while (len(items_tirees) < min_special_items):
+
+            for i in range(0,len(pool_special)):
+
+
+                proba = [1,pool_special[i][1]]
+
+                tirage = random.choices(tirage_1_item,weights=proba,k=pool_special[i][3])
+
+                resultat = Counter(tirage)
+                nb = resultat.get("Oui",0)
+
+                for _ in range(0,nb):
+                    if (len(items_tirees) < max_items):
+
+                        items_tirees.append(pool_special[i][0])
+
+                    else:
+                        break
+    while (len(items_tirees) < min_items) or (len(items_tirees) < max_items ):
+        for i in range(0,len(pool_resource)):
+
+
+            proba = [1,pool_resource[i][1]]
+
+            tirage = random.choices(tirage_1_item,weights=proba,k=pool_resource[i][3])
+
+            resultat = Counter(tirage)
+            nb = resultat.get("Oui",0)
+            
+            
+
+
+            for _ in range(0,nb):
+                if (len(items_tirees) < max_items):
+
+                    items_tirees.append(pool_resource[i][0])
+
+                else:
+                    break
+
+
 
 
     return items_tirees    
+
+
+
+
+
+
+
 
 
 
@@ -278,29 +362,45 @@ def draw_inventory(surface, font, inventory_data):
     """
     
     # Position de départ pour dessiner (coin haut-gauche de l'UI + marge)
-    start_x = WINDOW_WIDTH - 650
+    start_x = WINDOW_WIDTH - 300
     start_y = 20
     line_height = 40 # Espace entre chaque ligne
-    
+    special_items_x = GRID_PIXEL_WIDTH+20
+    special_items_y = 20
+    special_items_title = "Items Permanents:"
     # Boucle sur l'inventaire (ex: {"Pas": 70, "Pieces": 0})
     for index, (key, value) in enumerate(inventory_data.items()):
+        if key != "Items permanents":
+            
+            # 1. Crée le texte (ex: "Pas: 70")
+            text_to_draw = f"{key}: {value}"
+            
+            # 2. Crée la surface de texte
+            text_surface = font.render(text_to_draw, True, BLACK) # Texte en noir
+            
+            # 3. Calcule la position Y
+            y_pos = start_y + (index * line_height)
+            
+            # 4. Dessine le texte sur l'écran
+            surface.blit(text_surface, (start_x, y_pos))
+    
+    text_surface = font.render(special_items_title,True,BLACK)
+    surface.blit(text_surface, (special_items_x, special_items_y))
+    for index, item in enumerate(game_state.inventory["Items permanents"]):
+
         
-        # 1. Crée le texte (ex: "Pas: 70")
-        text_to_draw = f"{key}: {value}"
-        
-        # 2. Crée la surface de texte
-        text_surface = font.render(text_to_draw, True, BLACK) # Texte en noir
-        
-        # 3. Calcule la position Y
-        y_pos = start_y + (index * line_height)
-        
-        # 4. Dessine le texte sur l'écran
-        surface.blit(text_surface, (start_x, y_pos))
-    #surface.blit(font.render(str(game_state.player_x),True,BLACK),((WINDOW_WIDTH - 300),WINDOW_HEIGHT-50)) #AFFICHAGE POSITION X
-    #surface.blit(font.render(str(game_state.player_y),True,BLACK),((WINDOW_WIDTH - 300),WINDOW_HEIGHT-80)) #AFFICHAGE POSITION Y
-    #surface.blit(font.render(str(game_state.intended_direction),True,BLACK),((WINDOW_WIDTH - 300),WINDOW_HEIGHT-110)) #AFFICHAGE intented_direction
-    #surface.blit(font.render(str(game_state.inInventory),True,BLACK),((WINDOW_WIDTH - 300),WINDOW_HEIGHT-130)) #AFFICHAGE inInventory
-    #surface.blit(font.render(str(game_state.inventory_indicator_pos),True,BLACK),((WINDOW_WIDTH - 300),WINDOW_HEIGHT-150)) #AFFICHAGE inventory_indicator_pos
+                    # 1. Crée le texte (ex: "Pas: 70")
+            
+            
+            # 2. Crée la surface de texte
+            text_surface = font.render(item, True, BLACK) # Texte en noir
+            
+            # 3. Calcule la position Y
+            special_items_y = special_items_y + ((index+1) * line_height)
+            
+            # 4. Dessine le texte sur l'écran
+            surface.blit(text_surface, (special_items_x, special_items_y))
+
         # --- Affiche un message temporaire si défini ---
     now = pygame.time.get_ticks()
     if game_state.temp_message != None  and now <= game_state.duree_temp_message:
@@ -313,6 +413,8 @@ def draw_inventory(surface, font, inventory_data):
         game_state.temp_message = None
 
             
+            
+
 
         
 def normaliser_portes(portes1):
@@ -324,6 +426,8 @@ def normaliser_portes(portes1):
         portes1[y1,x1] = '#'
         
      
+
+  
 
 
 
@@ -341,6 +445,8 @@ def can_move(portes_joueur, portes_cible, direction):
     """
 
     try:
+        
+
 
         # On compare les tableaux, puis on vérifie si .all() (tous) sont True
         if direction == (0, -1) and np.array_equal(p_joueur_tampon[0, :] ,p_cible_tampon[2, :]) and np.array_equal(p_cible_tampon[2, :],[' ','#',' ']): # Haut
@@ -380,7 +486,6 @@ def bord_portes_joueur(matrice_portes,dir):
             # colonne gauche de B
         return matrice_portes[:, -1]
     
-    
 def ouvrir_portes(matrice_portes,dir):
 
     if dir == (0,-1):  # haut
@@ -396,6 +501,7 @@ def ouvrir_portes(matrice_portes,dir):
     elif dir == (1,0):  # droite
             # colonne gauche de B
         matrice_portes[:, -1] = [' ', '#',' ']
+
 
 
 
@@ -499,6 +605,8 @@ def tirage():
             
 
 
+
+
     return chosen_ids,chosen_ids_portes,chosen_ids_images
 
 """  #: porte ouverte
@@ -515,7 +623,8 @@ def tirage():
 """
 
 
-def aleatoire_portes(matrice_portes,score_ouv,score_verr,score_dbverr):
+def random_doors_generation(matrice_portes,score_ouv,score_verr,score_dbverr):
+
 
     ligne = 0
     col = 0
@@ -537,6 +646,7 @@ def aleatoire_portes(matrice_portes,score_ouv,score_verr,score_dbverr):
 
     lignes,cols = np.where(matrice_portes== '#' )                
 
+    
 
     for y,x in zip(lignes,cols):
 
@@ -555,21 +665,24 @@ def aleatoire_portes(matrice_portes,score_ouv,score_verr,score_dbverr):
 
         
 
-def genere_portes(matrice_portes,y):
+
+
+
+def difficulty_scaled_doors(matrice_portes,y):
     
 
     if y == 8:
         pass
     elif y <= 7  and y > 3:
 
-        aleatoire_portes(matrice_portes,0.5,1,0.5)
+        random_doors_generation(matrice_portes,0.5,1,0.5)
 
     elif y == 3:
 
-        aleatoire_portes(matrice_portes,0,0.5,2)  
+        random_doors_generation(matrice_portes,0,0.5,2)  
 
     else:
-        aleatoire_portes(matrice_portes,0,0,1)  
+        random_doors_generation(matrice_portes,0,0,1)  
 
 
 
@@ -587,9 +700,11 @@ Boucle principale :
 - Maintient un framerate constant.
 """
 
+
 running = True
 print("Utilisez ZQSD pour choisir une direction.")
 print("Appuyez sur ESPACE pour vous déplacer dans cette direction.")
+
 
 
 while running:
@@ -600,6 +715,7 @@ while running:
             running = False
 
         
+
         if event.type == pygame.KEYDOWN :
                 
                     
@@ -625,29 +741,34 @@ while running:
                     chosen_room_id = game_state.rooms_on_offer[game_state.inventory_indicator_pos+1] 
 
 
-                    if game_state.inventory_indicator_pos == -2 and game_state.inventory["Gemmes"] > 0:
+                    if game_state.inventory_indicator_pos == -2 and game_state.inventory["Des"] > 0:
                         game_state.rooms_on_offer,game_state.rooms_on_offer_mats,game_state.rooms_on_offer_images = tirage()
-                        game_state.inventory["Gemmes"] -= 1
+                        game_state.inventory["Des"] -= 1
                         break # on relance le tirage donc le code en dessous ne doit pas s'executer 
-                    elif (game_state.inventory_indicator_pos == -2 and game_state.inventory["Gemmes"] ==0) or (game_state.inventory_indicator_pos >-2 and game_state.inventory["Gemmes"] < rooms_data.rooms[chosen_room_id].price) :
+                    elif (game_state.inventory_indicator_pos == -2 and game_state.inventory["Des"] ==0) :
 
+                        game_state.duree_temp_message = pygame.time.get_ticks() + 1500
+                        game_state.temp_message = "Pas assez de des"     
+                        break
+
+                    elif (game_state.inventory_indicator_pos >-2 and game_state.inventory["Gemmes"] < rooms_data.rooms[chosen_room_id].price):
                         game_state.duree_temp_message = pygame.time.get_ticks() + 1500
                         game_state.temp_message = "Pas assez de gemmes"     
                         break
-                    
                     elif (game_state.inventory_indicator_pos >-2 and game_state.inventory["Gemmes"] >= rooms_data.rooms[chosen_room_id].price):
 
                         game_state.inventory["Gemmes"] -= rooms_data.rooms[chosen_room_id].price
                     
 
                         
+
                             
                     # 1. Récupère la pièce choisie dans l'inventaire
                     target_x, target_y = game_state.build_target_coords # Récupère les coords
                     chosen_room_id_portes = np.array(game_state.rooms_on_offer_mats[game_state.inventory_indicator_pos+1])
 
 
-                    genere_portes(chosen_room_id_portes,target_y) # genere l'etat de chaque porte ( a l'exception de celle qu'on ouvre qui doit etre ouverte)
+                    difficulty_scaled_doors(chosen_room_id_portes,target_y) # genere l'etat de chaque porte ( a l'exception de celle qu'on ouvre qui doit etre ouverte)
                     print(chosen_room_id_portes)
                     chosen_room_id_image = game_state.rooms_on_offer_images[game_state.inventory_indicator_pos+1] 
                             
@@ -694,35 +815,55 @@ while running:
                 if len(game_state.items_tirees) == 0:
 
                     game_state.items_selection = False
-                    break
-
+                    
+                    
+                else:
                  
-                if event.key == pygame.K_z:
-                    print("Curseur inventaire HAUT") 
-                    if game_state.items_indicator_pos > 0:
-
-                        game_state.items_indicator_pos -= 1
-                elif event.key == pygame.K_s:
-                    print("Curseur inventaire BAS") 
-                    if game_state.items_indicator_pos < (len(game_state.items_tirees)-1):
-
-                        game_state.items_indicator_pos += 1   
-                        # Le joueur VALIDE son choix de pièce
-
-                elif event.key == pygame.K_SPACE:
-
-                    chosen_item = game_state.items_tirees[game_state.items_indicator_pos]
-
-                    if chosen_item <= 4:
-                        game_state.inventory[items_data.resource_items[chosen_item].name+'s'] += 1
+                    if event.key == pygame.K_z:
                         
-                    elif chosen_item >= 5 and  chosen_item<= 9:
-                        game_state.inventory["Pas"] += items_data.resource_items[chosen_item].arg
-                        
-                    elif chosen_item >= 100:
+                        if game_state.items_indicator_pos > 0:
 
-                       game_state.inventory["Items permanents"].append(items_data.special_items[chosen_item].name)
-                    game_state.items_tirees.remove(chosen_item)
+                            game_state.items_indicator_pos -= 1
+
+                        print("Curseur inventaire HAUT",game_state.items_indicator_pos,len(game_state.items_tirees))
+                    elif event.key == pygame.K_s:
+                        
+                        if game_state.items_indicator_pos < (len(game_state.items_tirees)-1):
+
+                            game_state.items_indicator_pos += 1   
+                            # Le joueur VALIDE son choix de pièce
+
+                        print("Curseur inventaire BAS",game_state.items_indicator_pos,len(game_state.items_tirees)) 
+
+                    elif event.key == pygame.K_SPACE:
+
+                        chosen_item = game_state.items_tirees[game_state.items_indicator_pos]
+
+                        if chosen_item <= 4:
+                            game_state.inventory[items_data.resource_items[chosen_item].name+'s'] += 1
+                            
+                        elif chosen_item >= 5 and  chosen_item<= 9:
+                            game_state.inventory["Pas"] += items_data.resource_items[chosen_item].arg
+                            
+                        elif chosen_item >= 100:
+                            if chosen_item not in game_state.inventory["Items permanents"]:
+                                print("DACCORD")
+                                game_state.inventory["Items permanents"].append(items_data.special_items[chosen_item].name)
+
+                        game_state.items_tirees.remove(chosen_item)
+                        if game_state.items_indicator_pos > len(game_state.items_tirees)-1:
+                            game_state.items_indicator_pos -= 1
+                        elif game_state.items_indicator_pos < 0:
+                            game_state.items_indicator_pos == 0
+
+                                
+                        if len(game_state.items_tirees) == 0:
+
+                            game_state.items_selection = False
+                    
+
+
+
 
 
 
@@ -734,7 +875,7 @@ while running:
             # -----------------------------------------------------
 
 
-            else:
+            elif not(game_state.inInventory) and not(game_state.items_selection):
 
                     # ZQSD contrôle la direction du joueur
                 if event.key == pygame.K_z: game_state.intended_direction = (0, -1)
@@ -812,6 +953,8 @@ while running:
                                                     
                                        
                                             
+                                                    
+
                                             
                                         # Le joueur se déplace vers une pièce EXISTANTE
                                 else:
@@ -838,8 +981,8 @@ while running:
                                 game_state.temp_message = "Il y a un mur ici, essayez une autre direction"                
 
                             
-                    if game_state.player_x == new_x and game_state.player_y == new_y:
-                        game_state.inventory["Pas"] -=1
+                        if game_state.player_x == new_x and game_state.player_y == new_y:
+                            game_state.inventory["Pas"] -=1
 
                     # On réinitialise la direction après chaque action Espace
                     if not game_state.inInventory:
@@ -860,8 +1003,9 @@ while running:
     # 4. NOUVEAU: Dessine le rectangle blanc de l'interface à DROITE
     #    (x, y, largeur, hauteur)
     ui_rect = pygame.Rect(GRID_PIXEL_WIDTH, 0, UI_PIXEL_WIDTH, WINDOW_HEIGHT)
-    RIGHT_UI_COLOR = (64, 224, 208)  # Turquoise doux
-    pygame.draw.rect(screen, RIGHT_UI_COLOR, ui_rect)
+    pygame.draw.rect(screen, WHITE, ui_rect)
+
+
 
     draw_inventory(screen, text_font, game_state.inventory)
 
@@ -871,13 +1015,16 @@ while running:
 
     elif (game_state.player_y,game_state.player_x) not in game_state.visited_coords:
         print("nouvelle map,tirage d'items")
-        game_state.items_selection = True
         game_state.items_tirees = tirage_items()
+        game_state.items_indicator_pos = 0
+        if len(game_state.items_tirees) > 0:
+
+            game_state.items_selection = True
         game_state.visited_coords.append((game_state.player_y,game_state.player_x))
     
 
     if game_state.items_selection:
-
+        
         draw_inventory_items()
 
     # 5. Met à jour l'écran

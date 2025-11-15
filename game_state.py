@@ -1,8 +1,6 @@
-
 # Fichier: game_state.py
 import rooms_data
-import pygame
-import os
+
 from constantes import GRID_WIDTH,GRID_HEIGHT
 # --- Donn�es du Joueur ---
 
@@ -12,10 +10,11 @@ from constantes import GRID_WIDTH,GRID_HEIGHT
 inventory = {
 			"Pas":70,
 			"Pieces":0,
-			"Gemmes":2,
-			"Cles":30,
-			"Des":0,
+			"Gemmes":200,
+			"Cles":200,
+			"Des":200,
             "Items permanents":[]
+
 
 }
 
@@ -33,11 +32,16 @@ rooms_on_offer_images = []
 
 items_tirees = []
 
+
+
 visited_coords = [(8,2)] #liste de tuples des coordonnées visitees
 porte_ouverte = False
 inInventory = False
 
+
+
 items_selection = False #si on est dans le menu de selection des items tires aleatoirement
+
 
 temp_message = None #message affiché temporairement qd choix deplacement joueur impossible
 duree_temp_message = 0 # duree affichage
@@ -45,9 +49,12 @@ duree_temp_message = 0 # duree affichage
 
 map_grid = [["0" for x in range(GRID_WIDTH)] for y in range(GRID_HEIGHT)]
 
+
+
 map_grid_portes =  [[ [[' ', ' ', ' ]'],[' ', ' ', ' '],[' ', ' ', ' ']] for x in range(GRID_WIDTH)] for y in range(GRID_HEIGHT)]  
 
 map_grid_images = [["" for x in range(GRID_WIDTH)] for y in range(GRID_HEIGHT)]
+
 
 
 # --- Initialisation de la carte ---

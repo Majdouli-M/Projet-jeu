@@ -28,6 +28,8 @@ resource_items = {
         rarity_score=1,
         arg = 0
     ),
+
+
     4: Item(
         name="De", 
         rarity_score=20,
@@ -35,12 +37,12 @@ resource_items = {
     ),
     5: Item(
         name="Pomme", 
-        rarity_score=30,
+        rarity_score=55,
         arg = 2
     ),
     6: Item(
         name="Banane", 
-        rarity_score=35,
+        rarity_score=50,
         arg = 3
     ),
     7: Item(
@@ -53,33 +55,40 @@ resource_items = {
         rarity_score=35,
         arg = 15
     ),
+
+
     9: Item(
         name="Repas", 
         rarity_score=20,
         arg = 25
     ),
+
     10: Item(
         name="endroit a creuser", 
         rarity_score=20,
         arg = [1,2,3,4,5]
     ),
+
     11: Item(
         name="casier", 
         rarity_score=20,
         arg = [1,2,3,4,5,6,7,8,9]
     ),
+
     12: Item(
         name="3 Pieces", 
         rarity_score=50,
         arg = 0
     ),
+
     13: Item(
         name="40 Pieces", 
         rarity_score=50,
         arg = 0
     )
-}
 
+
+}
 
 special_items = {
     100: Item(
@@ -102,10 +111,14 @@ special_items = {
         rarity_score=1,
         arg = 0
     ),
+
+
     104: Item(
         name="Patte de lapin", 
         rarity_score=1,
         arg = 0
     )
+
+
 }
 
