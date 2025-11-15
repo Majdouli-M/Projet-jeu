@@ -1,5 +1,3 @@
-networkx
-matplotlib
-pygame
-
+pygame == 2.6.1
+numpy == 2.3.4
 

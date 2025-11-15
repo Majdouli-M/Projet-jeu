@@ -149,7 +149,7 @@ rooms = {
         special_pool=[],
         max_items=5,
         min_items=0,
-        min_special_items=-1,
+        min_special_items=0,
         rarity=0,
         price=0,
         portes=[
@@ -169,7 +169,7 @@ rooms = {
         special_pool=[],
         max_items=2,
         min_items=0,
-        min_special_items=-1,
+        min_special_items=0,
         rarity=1,
         price=0,
         portes=[
@@ -212,7 +212,7 @@ rooms = {
             (101, items_data.special_items[101].rarity_score, 0, 1),
             (103, items_data.special_items[103].rarity_score, 0, 1)
         ],
-        max_items=3,
+        max_items=0,
         min_items=0,
         min_special_items=-1,
         rarity=1,
@@ -233,7 +233,7 @@ rooms = {
         special_pool=[],
         max_items=4,
         min_items=0,
-        min_special_items=-1,
+        min_special_items=0,
         rarity=2,
         price=3,
         portes=[
@@ -277,7 +277,7 @@ rooms = {
         special_pool=[],
         max_items=3,
         min_items=0,
-        min_special_items=-1,
+        min_special_items=0,
         rarity=0,
         price=0,
         portes=[
@@ -300,7 +300,7 @@ rooms = {
         special_pool=[],
         max_items=0,
         min_items=0,
-        min_special_items=-1,
+        min_special_items=0,
         rarity=0,
         price=0,
         portes=[
@@ -347,7 +347,7 @@ rooms = {
         special_pool=[],
         max_items=6,
         min_items=2,
-        min_special_items=1,
+        min_special_items=0,
         rarity=1,
         price=0,
         portes=[
@@ -364,14 +364,14 @@ rooms = {
          special_pool=[
             (100, items_data.special_items[100].rarity_score, 0, 1)
         ],
-        max_items=6,
-        min_items=2,
-        min_special_items=1,
+        max_items=0,
+        min_items=0,
+        min_special_items=0,
         rarity=1,
         price=0,
         portes=[
             [' ', ' ', ' '],
-            ['#', ' ', '#'],
+            [' ', ' ', ' '],
             [' ', '#', ' ']
         ],
         image=loaded_images["red8.png"]
@@ -439,7 +439,6 @@ rooms = {
             ['X', ' ', 'X'],
             [' ', 'X', ' ']
         ],
-
         image=loaded_images["r45.png"]
     ),
 }
