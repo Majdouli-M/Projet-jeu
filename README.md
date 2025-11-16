@@ -61,6 +61,19 @@ python main.py
 Ligne 5 du fichier constantes.py vous pouvez adapter la taille de la fenêtre en pixels en augmentant ou diminuant 700:
 GRID_PIXEL_WIDTH = 700  
 
+
+## **Instructions pour jouer**
+- Un curseur représente la pièce actuelle du joueur ou de la joueuse dans le manoir.  
+- Utilise les touches pour te déplacer :  
+  - **Z** : se déplacer vers le haut  
+  - **Q** : se déplacer vers la gauche  
+  - **S** : se déplacer vers le bas  
+  - **D** : se déplacer vers la droite  
+- Appuie sur **Espace** pour valider ton choix.  
+- Explore les salles, récupère des items, et utilise les dés et les gemmes pour progresser stratégiquement.
+-But du jeu : atteindre l'ANTECHAMBER
+
+
 ## **Auteurs**
 
 **BOUREMANI Yones*
