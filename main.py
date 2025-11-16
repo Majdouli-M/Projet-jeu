@@ -841,7 +841,6 @@ Boucle principale :
 - Gère les événements clavier (déplacement, inventaire)
 - Met à jour l'état du jeu
 - Dessine la grille, le joueur et l'interface utilisateur
-- Maintient un framerate constant.
 """
 
 
@@ -1200,11 +1199,11 @@ while running:
                                             game_state.inventory["Cles"]+= 1
 
 
-                            #Fin bloc effets speciaux
+                            #       --Fin bloc effets speciaux--
 
 
                             if (game_state.player_y,game_state.player_x) not in game_state.visited_coords: 
-                                print("nouvelle map,tirage d'items")
+                                
                                 game_state.items_tirees = tirage_items() # si la map n'a jamais été tirée on fait un tirage d'objets
                                 game_state.items_indicator_pos = 0
                                 if len(game_state.items_tirees) > 0: # si qqch a été tiré
