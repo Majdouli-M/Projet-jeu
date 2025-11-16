@@ -18,7 +18,8 @@ L’objectif principal était de créer un jeu structuré de manière modulaire,
 
 
 ## **Structure du projet**
-│
+
+```bash
 ├── README.md                 # Ce fichier, explique le projet et ses fonctionnalités
 ├── requirements.txt          # Dépendances Python nécessaires pour exécuter le jeu
 ├── main.py                   # Fichier principal du jeu, gère la logique et l’affichage, lance le programme
@@ -39,8 +40,8 @@ L’objectif principal était de créer un jeu structuré de manière modulaire,
 │   └── ...                   
 │
 └── rooms/                    # Contient les images des rooms utilisées dans le jeu
-    └── ...                   
-
+    └── ...
+```
 
 ## **Installation des dépendances**
 
