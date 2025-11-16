@@ -56,9 +56,10 @@ Utilisez la commande suivante dans le terminal :
 python main.py
 
 
-## **Dans le fichier constantes.py** :
-GRID_PIXEL_WIDTH = 700   # Définit la largeur de la fenêtre en pixels, modifiable pour l'adapter à l'écran du joueur
+## **Modification de la taille de la fenêtre du jeu** :
 
+# Ligne 5 du fichier constantes.py vous pouvez adapter la taille de la fenêtre en pixels en augmentant ou diminuant 700:
+GRID_PIXEL_WIDTH = 700  
 
 ## **Auteurs**
 
