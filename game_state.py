@@ -6,11 +6,11 @@ from constantes import GRID_WIDTH,GRID_HEIGHT
 
 #inventaire du joueur
 inventory = {
-			"Pas":2,
+			"Pas":70,
 			"Pieces":0,
-			"Gemmes":200,
-			"Cles":200,
-			"Des":200,
+			"Gemmes":2,
+			"Cles":0,
+			"Des":0,
             "Items permanents":[]
 
 
