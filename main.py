@@ -107,7 +107,7 @@ def draw_player_and_indicator():
         
             
         default_thickness = 2
-        selected_thickness = 8
+        selected_thickness = 8 #le coté vers lequel le joueur regarde est plus epais que les autres
         player_rect = pygame.Rect(game_state.player_x * CELL_SIZE, game_state.player_y * CELL_SIZE, CELL_SIZE, CELL_SIZE)
         p_topleft = (player_rect.left, player_rect.top)
         p_topright = (player_rect.right - 1, player_rect.top)
@@ -164,7 +164,7 @@ def draw_inventory_selection():
         if i != -2:
 
 
-            room_id = game_state.rooms_on_offer[i + 1] # Convertit -1,0,1 en 0,1,2
+            room_id = game_state.rooms_on_offer[i + 1] # Convertit -1,0,1 en 0,1,2 car l'indicateur est initialement positionné sur la room du milieu 
                 
             image_surface = pygame.transform.smoothscale(game_state.rooms_on_offer_images[i+1], (INV_CELL_SIZE, INV_CELL_SIZE))
             price_text_surface = text_font.render(str(rooms_data.rooms[room_id].price), True, BLACK)   
@@ -175,12 +175,12 @@ def draw_inventory_selection():
             
         elif i == -2:
 
-            if game_state.inventory_indicator_pos != -2:
+            if game_state.inventory_indicator_pos != -2: # si l'indicateur n'est pas sur l'option Reroll
 
                     
                 reroll_text = text_font.render("Reroll", True, BLACK) 
             else:
-                reroll_text = text_font.render("Reroll", True, RED) 
+                reroll_text = text_font.render("Reroll", True, RED)  # si l'indicateur ests sur l'option Reroll on l'affiche en rouge
             screen.blit(reroll_text, (start_x, current_y))
 
             
@@ -224,7 +224,7 @@ def draw_inventory_items():
     for i, item_id in enumerate(game_state.items_tirees+[""]): # on ajoute "" a la liste pour ajouter un indice pour l'option 'Leave'
         current_y = WINDOW_HEIGHT - (4 - ecart * (i+1)) * INV_CELL_SIZE
 
-        # On suppose que item[0] contient l'ID ou le nom de l'objet
+        # la condition type(item_id) == int pour verifier si l'index se trouve avant le caractere vide "" a la fin de la liste game_state.items_tirees
         if type(item_id) == int and i < (len(game_state.items_tirees)+1):
 
             if item_id < 100 :
@@ -277,10 +277,10 @@ def tirage_items():
     #(ID, rarity_score, min value, max value),
     pool_resource = rooms_data.rooms[roomid].resource_pool
     pool_special = rooms_data.rooms[roomid].special_pool
+    
     #calcul de min items
-
     min_items = 0
-    for i in range(0,len(pool_special)):
+    for i in range(0,len(pool_special)): 
 
         min_items += pool_special[i][2]
 
@@ -302,7 +302,7 @@ def tirage_items():
     items_tirees = []
 
     
-    tirage_1_item = ["Oui","Non"]
+    tirage_1_item = ["Oui","Non"] #soit on obtient l'item soit on l'obtient pas
 
 
 
@@ -318,12 +318,14 @@ def tirage_items():
         for i in range(0,len(pool_special)):
 
 
-            proba = [1,pool_special[i][1]]
+            poids  = [1,pool_special[i][1]] #poids dans le cas ou on drop : 1/(1+pool_special[i][1])
+                                            # poids dans le cas ou on drop pas : 1 - 1/(1+pool_special[i][1]) = pool_special[i][1]/(1+pool_special[i][1])
+                                            # meme denominateur donc on a 1 le poids associé au cas ou on obtient l'objet et pool_special[i][1] le poids associé au cas ou on obtient pas l'objet
 
-            tirage = random.choices(tirage_1_item,weights=proba,k=pool_special[i][3])
+            tirage = random.choices(tirage_1_item,weights=poids ,k=pool_special[i][3])
 
             resultat = Counter(tirage)
-            nb = resultat.get("Oui",0)
+            nb = resultat.get("Oui",0) #nombres de "Oui" obtenus <=> nb de fois que l'objet a été tiré
 
             if nb < pool_special[i][2]: #si on a tiré moins que le nb minimum droppable de cet item ()
                 nb = pool_special[i][2]
@@ -336,9 +338,9 @@ def tirage_items():
 
                 else:
                     break
-    else:
+    else:   #si on impose un item special
         
-        while (len(items_tirees) < min_special_items):
+        while (len(items_tirees) < min_special_items): 
 
             for i in range(0,len(pool_special)):
 
@@ -360,7 +362,7 @@ def tirage_items():
 
                     else:
                         break
-    while ((len(items_tirees) < max_items )):
+    while ((len(items_tirees) < max_items )): #tirage des resource_items
         
         for i in range(0,len(pool_resource)):
 
@@ -372,7 +374,7 @@ def tirage_items():
             resultat = Counter(tirage)
             nb = resultat.get("Oui",0)
             
-            if nb < pool_resource[i][2]: #si on a tiré moins que le nb minimum droppable de cet item ()
+            if nb < pool_resource[i][2]: #si on a tiré moins que le nb minimum droppable de cet item 
                 nb = pool_resource[i][2]
 
             print(f"{nb} pour {pool_resource[i][2]}")
@@ -670,35 +672,37 @@ def tirage():
             
 
             for _ in range(4):
-                # Extraire la ligne ou colonne de B selon la direction
+                # Extraire la ligne ou colonne de chosen_ids_portes[j] selon la direction
                 if dir == (0,-1):  # haut
-                    bord = chosen_ids_portes[j][-1, :]        # ligne du bas de B
+                    bord = chosen_ids_portes[j][-1, :]        # ligne du bas de chosen_ids_portes[j]
                     target = current_room_portes[0, :]
                 elif dir == (0,1):  # bas
-                    bord = chosen_ids_portes[j][0, :]         # ligne du haut de B
+                    bord = chosen_ids_portes[j][0, :]         # ligne du haut de chosen_ids_portes[j]
                     target = current_room_portes[-1, :]
                 elif dir == (-1,0):  # gauche
-                    bord = chosen_ids_portes[j][:, -1]        # colonne droite de B
+                    bord = chosen_ids_portes[j][:, -1]        # colonne droite de chosen_ids_portes[j]
                     target = current_room_portes[:, 0]
                 elif dir == (1,0):  # droite
-                    bord = chosen_ids_portes[j][:, 0]         # colonne gauche de B
+                    bord = chosen_ids_portes[j][:, 0]         # colonne gauche de chosen_ids_portes[j]
                     target = current_room_portes[:, -1]
 
-                if np.array_equal(bord, target):
-                    if not(target_x == GRID_WIDTH-1 and np.array_equal(chosen_ids_portes[j][:,-1],np.array([' ', '#', ' '])  )) and not(target_x == 0 and np.array_equal(chosen_ids_portes[j][:,0],np.array([' ', '#', ' '])  )):
+                if np.array_equal(bord, target): 
+
+                    #conditions qui verifient que on est sur le bord de la map et qu'il n'y a pas de portes qui menent vers l'exterieur de la grille
+                    if not(target_x == GRID_WIDTH-1 and np.array_equal(chosen_ids_portes[j][:,-1],np.array([' ', '#', ' '])  )) and not(target_x == 0 and np.array_equal(chosen_ids_portes[j][:,0],np.array([' ', '#', ' '])  )): 
                         if not(target_y == GRID_HEIGHT-1 and np.array_equal(chosen_ids_portes[j][-1,:],np.array([' ', '#', ' '])  )) and not(target_y == 0 and np.array_equal(chosen_ids_portes[j][0,:],np.array([' ', '#', ' '])  )):
                             valide = True
-                            break
+                            break   #si tout correspond on a une bonne pioche pas besoin de faire plus de rotations on garde celle ci
 
                 
                     
                     
-                # Rotation horaire 90°
+                # Rotation horaire 90° si les conditions pas respectees
                 chosen_ids_portes[j] = np.rot90(chosen_ids_portes[j], k=-1)
                    
                 chosen_ids_images[j] = pygame.transform.rotozoom(chosen_ids_images[j], -90, 1)      
 
-        j+=1  
+        j+=1  #on passe a la room suivant (3 au total)
 
 
 
@@ -707,18 +711,7 @@ def tirage():
 
     return chosen_ids,chosen_ids_portes,chosen_ids_images
 
-"""  #: porte ouverte
-     % porte verouillée
-     X: porte verouillée à double tour   
 
-
-    Y = 8 : ###
-    Y = 7 à 4 : # %% X
-    Y = 3  :  % XX
-    Y = 2 à 0 : XXX
-
-
-"""
 
 
 def random_doors_generation(matrice_portes,score_ouv,score_verr,score_dbverr):
@@ -743,6 +736,13 @@ def random_doors_generation(matrice_portes,score_ouv,score_verr,score_dbverr):
                    score de rarité pour les portes verrouillées à double tour 'X'
         
     """
+
+
+
+
+
+
+
     ligne = 0
     col = 0
     if game_state.intended_direction == (0,-1):  # haut
@@ -819,7 +819,18 @@ def difficulty_scaled_doors(matrice_portes,y):
 
 
 
+    """  #: porte ouverte
+        % porte verouillée
+        X: porte verouillée à double tour   
 
+
+        Y = 8 : ###
+        Y = 7 à 4 : # %% X
+        Y = 3  :  % XX
+        Y = 2 à 0 : XXX
+
+
+    """
    
 
 # --- Boucle principale du jeu ---
