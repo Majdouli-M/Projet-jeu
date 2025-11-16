@@ -1148,8 +1148,8 @@ while running:
 
                             if game_state.map_grid[new_y][new_x] == "b1":
                                 game_state.inventory["Pas"] += 2
-
-
+                            elif game_state.map_grid[new_y][new_x] == "red5":
+                                game_state.inventory["Pas"] -= 2
                         if game_state.inventory["Pas"] < 0 and game_state.items_selection == False :
                             game_state.game_lost = True 
                             print(game_state.game_lost)
