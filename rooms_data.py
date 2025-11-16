@@ -6,19 +6,22 @@ from images_initialisation import loaded_images
 class Room:
 
     def __init__(self, name, resource_pool, special_pool, max_items, min_items, min_special_items, rarity, price, portes, image):
-        self.name = name  # Nom de la salle
-        self.resource_pool = resource_pool  # Liste des items normaux pouvant apparaître
-        self.special_pool = special_pool  # Liste des items spéciaux pouvant apparaître
-        self.max_items = max_items  # Nombre maximum d'items dans la salle
-        self.min_items = min_items  # Nombre minimum d'items dans la salle
-        self.min_special_items = min_special_items  # Nombre minimum d'items spéciaux (-1 = pas de minimum)
-        self.rarity = rarity  # Rarete de la salle (impact sur la probabilité)
-        self.price = price  # Coût associée à la salle
-        self.portes = portes  # Disposition des portes dans la salle
-        self.image = image  # Image représentant la salle importer depuis le fichier rooms
+        self.name = name #Nom de la room
+        self.resource_pool = resource_pool  #pool d'items normaux/consommables obtenables
+        self.special_pool = special_pool #pool d'item speciaux obtenables
+        self.max_items = max_items #maximum d'items droppable dans une room (special items ou resource items)
+        self.min_items = min_items #minimum d'items droppable dans une room (special items ou resource items)
+        self.min_special_items = min_special_items #minimum de special items obtenable dans une room
+        self.rarity = rarity #score de rarité d'obtention de la room lors du tirage
+        self.price = price  #prix en gemmes de la room
+        self.portes = portes #matrice template qui affiche les sorties possibles dans une room
+        self.image = image #image associée à la room
 
+#rarité de "r2" et "r45" fixées à 999 pour ne jamais les obtenir lors d'un tirage aléatoire de map (tres tres peu probable)
 
-
+#chaque tuple dans ressource pool est associé à un item est correspond à :
+# 
+# (id,score de rarité du l'item, val minimal obtenable, val maximale obtenable)
 rooms = {
 
     "r2": Room(
