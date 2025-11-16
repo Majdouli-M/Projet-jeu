@@ -264,8 +264,8 @@ rooms = {
             (2, items_data.resource_items[2].rarity_score, 1, 1)
         ],
         special_pool=[
-            (100, items_data.special_items[100].rarity_score, 1, 1),
-            (101, items_data.special_items[101].rarity_score, 1, 1)
+            (100, items_data.special_items[100].rarity_score, 0, 1),
+            (101, items_data.special_items[101].rarity_score, 0, 1)
         ],
         max_items=4,
         
@@ -378,11 +378,11 @@ rooms = {
         name="Furnace",
         resource_pool=[],
          special_pool=[
-            (100, items_data.special_items[100].rarity_score, 1, 1)
+            (100, items_data.special_items[100].rarity_score, 0, 1)
         ],
         max_items=1,
         
-        min_special_items=1,
+        min_special_items=-1,
         rarity=1,
         price=0,
         portes=[
@@ -439,11 +439,7 @@ rooms = {
 
     "r45": Room(
         name="Antechamber",  #Room d'arrivé
-        resource_pool=[
-            (1, items_data.resource_items[1].rarity_score, 1, 1),
-            (2, items_data.resource_items[2].rarity_score, 1, 1),
-            (5, items_data.resource_items[5].rarity_score, 1, 1)
-        ],
+        resource_pool=[],
         special_pool=[],
         max_items=0,
         

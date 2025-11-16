@@ -438,6 +438,7 @@ def draw_inventory(font):
     
     text_surface = font.render(special_items_title,True,BLACK)
     screen.blit(text_surface, (special_items_x, special_items_y))
+    special_items_y += line_height
     for index, item in enumerate(game_state.inventory["Items permanents"]):
 
         
@@ -448,10 +449,10 @@ def draw_inventory(font):
             text_surface = font.render(items_data.special_items[item].name, True, BLACK) # Texte en noir
             
             # 3. Calcule la position Y
-            special_items_y = special_items_y + ((index+1) * line_height)
+            y_pos = special_items_y + ((index) * line_height)
             
             # 4. Dessine le texte sur l'écran
-            screen.blit(text_surface, (special_items_x, special_items_y))
+            screen.blit(text_surface, (special_items_x, y_pos))
 
         # --- Affiche un message temporaire si défini ---
     now = pygame.time.get_ticks()
@@ -961,7 +962,7 @@ while running:
 
             elif game_state.items_selection:  
 
-                if len(game_state.items_tirees) == 1: #si il y a eu une selection et que le joueur n'a pas eu de chance (rien eu) -> on quitte le menu de selection
+                if len(game_state.items_tirees) == 0: #si il y a eu une selection et que le joueur n'a pas eu de chance (rien eu) -> on quitte le menu de selection
                     
                     game_state.items_selection = False
                     if game_state.inventory["Pas"] <= 0: #activation flag game_lost si on a plus de pas apres avoir selectionné tous les objets
