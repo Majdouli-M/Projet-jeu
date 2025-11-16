@@ -43,7 +43,7 @@ L’objectif principal était de créer un jeu structuré de manière modulaire,
     └── ...
 ```
 
-## **Installation des dépendances**
+**Installation des dépendances**
 
 Assure-toi d’avoir Python installé puis exécute :
 pip install -r requirements.txt
@@ -56,6 +56,8 @@ Utilisez la commande suivante dans le terminal :
 python main.py
 
 
+**Dans le fichier constantes.py** :
+GRID_PIXEL_WIDTH = 700   # Définit la largeur de la fenêtre en pixels, modifiable pour l'adapter à l'écran du joueur
 
 
 **Auteurs**
@@ -65,4 +67,4 @@ python main.py
 **NIANG Serigne Moustapha*
 
 
-
+'''
