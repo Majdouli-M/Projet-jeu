@@ -6,11 +6,11 @@ from constantes import GRID_WIDTH,GRID_HEIGHT
 
 #inventaire du joueur
 inventory = {
-			"Pas":3,
+			"Pas":2,
 			"Pieces":0,
-			"Gemmes":2,
-			"Cles":0,
-			"Des":0,
+			"Gemmes":200,
+			"Cles":200,
+			"Des":200,
             "Items permanents":[]
 
 
@@ -18,6 +18,8 @@ inventory = {
 
 player_x = 2 #coordonnées du joueur ( colonnes)
 player_y = 8 #coordonée du joueur (lignes)
+prev_player_x = 0 
+prev_player_y = 0
 middle_map_pos = (950, 200) #coordonnées de la map du milieu lors de la selection dans l'inventaire
 inventory_indicator_pos = 0 # indicateur de selection des maps
 items_indicator_pos = 0 # indicateur de selection des items

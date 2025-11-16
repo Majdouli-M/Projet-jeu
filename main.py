@@ -277,9 +277,27 @@ def tirage_items():
     #(ID, rarity_score, min value, max value),
     pool_resource = rooms_data.rooms[roomid].resource_pool
     pool_special = rooms_data.rooms[roomid].special_pool
+    #calcul de min items
+
+    min_items = 0
+    for i in range(0,len(pool_special)):
+
+        min_items += pool_special[i][2]
+
+
+    for i in range(0,len(pool_resource)):
+        min_items += pool_resource[i][2]
+
+
+    if min_items > rooms_data.rooms[roomid].max_items:  #si depassement a cause d'erreurs dans rooms_data.py
+        min_items = rooms_data.rooms[roomid].max_items
+
+
     
-    min_items = rooms_data.rooms[roomid].min_items
     max_items = random.randint(min_items,rooms_data.rooms[roomid].max_items)
+
+
+
     min_special_items = rooms_data.rooms[roomid].min_special_items
     items_tirees = []
 
@@ -288,7 +306,7 @@ def tirage_items():
 
 
 
-
+    
 
     
 
@@ -342,7 +360,7 @@ def tirage_items():
 
                     else:
                         break
-    while ((len(items_tirees) < min_items) or (len(items_tirees) < max_items )):
+    while ((len(items_tirees) < max_items )):
         
         for i in range(0,len(pool_resource)):
 
@@ -1106,7 +1124,7 @@ while running:
                                         # 1. On PASSE EN MODE INVENTAIRE
                                         
                                         game_state.build_target_coords = (new_x, new_y)  # 2. On STOCKE la position ou la room va etre posée
-
+                                        game_state.inventory_indicator_pos_indicator_pos = 0
                                         game_state.rooms_on_offer,game_state.rooms_on_offer_mats,game_state.rooms_on_offer_images = tirage()
 
                                         game_state.inInventory = True
@@ -1126,8 +1144,14 @@ while running:
 
                                         if can_move(np.array(current_room_id_portes), np.array(target_room_id_portes)):
                                             # Déplace le joueur
+                                            game_state.prev_player_x = game_state.player_x
+                                            game_state.prev_player_y = game_state.player_y
                                             game_state.player_x = new_x
                                             game_state.player_y = new_y
+
+                                    else:
+
+                                        game_state.game_lost = True
 
 
 
@@ -1146,10 +1170,48 @@ while running:
 
                             #En dessous on peut mettre les effets speciaux specifiques a chaque room
 
-                            if game_state.map_grid[new_y][new_x] == "b1":
-                                game_state.inventory["Pas"] += 2
+                            if game_state.map_grid[new_y][new_x] == "b1" and game_state.map_grid[game_state.prev_player_y][game_state.prev_player_x] != "b1" : #deuxieme condition ajouté pour eviter generation de pas infinis
+                                game_state.inventory["Pas"] += 2 
+                            elif game_state.map_grid[new_y][new_x] == "b1" and game_state.map_grid[game_state.prev_player_y][game_state.prev_player_x] == "b1":
+                                game_state.duree_temp_message = pygame.time.get_ticks() + 1500
+                                game_state.temp_message = "Le bonus de BedRoom n'a pas été appliqué"       
+
+
                             elif game_state.map_grid[new_y][new_x] == "red5":
                                 game_state.inventory["Pas"] -= 2
+
+
+                            elif game_state.map_grid[new_y][new_x] == "b5" and ((new_y,new_x) not in game_state.visited_coords):
+
+                                for ligne_grille in game_state.map_grid:
+                                    for roomid in ligne_grille:
+                                        if  roomid == "b1":
+                                            game_state.inventory["Cles"]+= 1
+
+
+                            #Fin bloc effets speciaux
+
+
+                            if (game_state.player_y,game_state.player_x) not in game_state.visited_coords: 
+                                print("nouvelle map,tirage d'items")
+                                game_state.items_tirees = tirage_items() # si la map n'a jamais été tirée on fait un tirage d'objets
+                                game_state.items_indicator_pos = 0
+                                if len(game_state.items_tirees) > 0: # si qqch a été tiré
+
+                                    game_state.items_selection = True
+                                
+                                game_state.visited_coords.append((game_state.player_y,game_state.player_x))
+
+                                
+
+
+
+
+
+
+
+                            
+
                         if game_state.inventory["Pas"] < 0 and game_state.items_selection == False :
                             game_state.game_lost = True 
                             print(game_state.game_lost)
@@ -1192,14 +1254,8 @@ while running:
 
             draw_inventory_selection()
 
-        elif (game_state.player_y,game_state.player_x) not in game_state.visited_coords: 
-            print("nouvelle map,tirage d'items")
-            game_state.items_tirees = tirage_items()
-            game_state.items_indicator_pos = 0
-            if len(game_state.items_tirees) > 0: # si qqch a été tiré
 
-                game_state.items_selection = True
-            game_state.visited_coords.append((game_state.player_y,game_state.player_x))
+
         
 
         if game_state.items_selection: #affichage des items tirés

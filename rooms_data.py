@@ -5,12 +5,12 @@ from images_initialisation import loaded_images
 
 class Room:
 
-    def __init__(self, name, resource_pool, special_pool, max_items, min_items, min_special_items, rarity, price, portes, image):
+    def __init__(self, name, resource_pool, special_pool, max_items,  min_special_items, rarity, price, portes, image):
         self.name = name #Nom de la room
         self.resource_pool = resource_pool  #pool d'items normaux/consommables obtenables
         self.special_pool = special_pool #pool d'item speciaux obtenables
         self.max_items = max_items #maximum d'items droppable dans une room (special items ou resource items)
-        self.min_items = min_items #minimum d'items droppable dans une room (special items ou resource items)
+        
         self.min_special_items = min_special_items #minimum de special items obtenable dans une room
         self.rarity = rarity #score de rarité d'obtention de la room lors du tirage
         self.price = price  #prix en gemmes de la room
@@ -19,9 +19,19 @@ class Room:
 
 #rarité de "r2" et "r45" fixées à 999 pour ne jamais les obtenir lors d'un tirage aléatoire de map (tres tres peu probable)
 
-#chaque tuple dans ressource pool est associé à un item est correspond à :
+#chaque tuple dans les listes ressource_pool special_pool et  est associé à un item est correspond à :
 # 
 # (id,score de rarité du l'item, val minimal obtenable, val maximale obtenable)
+
+
+
+# /!\ attention /!\ Il faut que max_item <= somme des valeurs max obtenables pour chaque items de la resource_pool pour eviter une boucle infinie en jeu sur boucle while ((len(items_tirees) < min_items) or (len(items_tirees) < max_items ). 
+#La raison est que l'on peut tirer les items que au maximum le nombre de fois defini a la derniere position du tuple pour resource_pool et special_pool. 
+#Bien prendre ca en compte quand on ajoute des rooms. 
+
+
+
+
 rooms = {
 
     "r2": Room(
@@ -29,7 +39,7 @@ rooms = {
         resource_pool=[],
         special_pool=[],
         max_items=0,
-        min_items=0,
+       
         min_special_items=0,
         rarity=999,
         price=0,
@@ -55,7 +65,7 @@ rooms = {
             (100, items_data.special_items[100].rarity_score, 0, 1)
         ],
         max_items=2,
-        min_items=2,
+        
         min_special_items=-1,
         rarity=1,
         price=1,
@@ -81,7 +91,7 @@ rooms = {
             (102, items_data.special_items[102].rarity_score, 0, 1)
         ],
         max_items=8,
-        min_items=4,
+        
         min_special_items=-1,
         rarity=1,
         price=1,
@@ -104,7 +114,7 @@ rooms = {
             (102, items_data.special_items[102].rarity_score, 0, 1)
         ],
         max_items=8,
-        min_items=2,
+        
         min_special_items=-1,
         rarity=3,
         price=3,
@@ -128,7 +138,7 @@ rooms = {
             (100, items_data.special_items[100].rarity_score, 0, 1)
         ],
         max_items=3,
-        min_items=1,
+        
         min_special_items=-1,
         rarity=0,
         price=0,
@@ -151,7 +161,7 @@ rooms = {
         ],
         special_pool=[],
         max_items=5,
-        min_items=0,
+        
         min_special_items=0,
         rarity=0,
         price=0,
@@ -171,7 +181,7 @@ rooms = {
         ],
         special_pool=[],
         max_items=2,
-        min_items=0,
+        
         min_special_items=0,
         rarity=1,
         price=0,
@@ -193,7 +203,7 @@ rooms = {
             (100, items_data.special_items[100].rarity_score, 0, 1)
         ],
         max_items=3,
-        min_items=0,
+        
         min_special_items=-1,
         rarity=3,
         price=2,
@@ -216,7 +226,7 @@ rooms = {
             (103, items_data.special_items[103].rarity_score, 0, 1)
         ],
         max_items=0,
-        min_items=0,
+        
         min_special_items=-1,
         rarity=1,
         price=1,
@@ -235,7 +245,7 @@ rooms = {
         ],
         special_pool=[],
         max_items=4,
-        min_items=0,
+        
         min_special_items=0,
         rarity=2,
         price=3,
@@ -258,7 +268,7 @@ rooms = {
             (101, items_data.special_items[101].rarity_score, 1, 1)
         ],
         max_items=4,
-        min_items=0,
+        
         min_special_items=-1,
         rarity=2,
         price=2,
@@ -279,7 +289,7 @@ rooms = {
         ],
         special_pool=[],
         max_items=3,
-        min_items=0,
+        
         min_special_items=0,
         rarity=0,
         price=0,
@@ -301,8 +311,8 @@ rooms = {
             (5, items_data.resource_items[5].rarity_score, 1, 1)
         ],
         special_pool=[],
-        max_items=0,
-        min_items=0,
+        max_items=4,
+        
         min_special_items=0,
         rarity=0,
         price=0,
@@ -319,8 +329,8 @@ rooms = {
     "h7": Room(
         name="Foyer",
         resource_pool=[
-            (1, items_data.resource_items[1].rarity_score, 2, 2),
-            (2, items_data.resource_items[2].rarity_score, 1, 1),
+            (1, items_data.resource_items[1].rarity_score, 2, 5),
+            (2, items_data.resource_items[2].rarity_score, 1, 6),
         ],
          special_pool=[
             (100, items_data.special_items[100].rarity_score, 0, 1),
@@ -328,7 +338,7 @@ rooms = {
             (104, items_data.special_items[104].rarity_score, 0, 1)
          ],
         max_items=6,
-        min_items=2,
+        
         min_special_items=1,
         rarity=2,
         price=2,
@@ -350,7 +360,7 @@ rooms = {
         ],
         special_pool=[],
         max_items=12,
-        min_items=6,
+        
         min_special_items=0,
         rarity=1,
         price=0,
@@ -363,14 +373,14 @@ rooms = {
     ),
 
     "red8": Room(
-        name="Fernace",
+        name="Furnace",
         resource_pool=[],
          special_pool=[
-            (100, items_data.special_items[100].rarity_score, 0, 1)
+            (100, items_data.special_items[100].rarity_score, 1, 1)
         ],
-        max_items=0,
-        min_items=0,
-        min_special_items=0,
+        max_items=1,
+        
+        min_special_items=1,
         rarity=1,
         price=0,
         portes=[
@@ -391,7 +401,7 @@ rooms = {
         ],
         special_pool=[],
         max_items=2,
-        min_items=0,
+        
         min_special_items=0,
         rarity=0,
         price=1,
@@ -413,7 +423,7 @@ rooms = {
         ],
         special_pool=[],
         max_items=2,
-        min_items=0,
+        
         min_special_items=0,
         rarity=1,
         price=0,
@@ -434,7 +444,7 @@ rooms = {
         ],
         special_pool=[],
         max_items=0,
-        min_items=0,
+        
         min_special_items=0,
         rarity=999,
         price=0,
