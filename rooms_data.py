@@ -354,9 +354,11 @@ rooms = {
     "red5": Room(
         name="Gymnasium",
         resource_pool=[
+            (5, items_data.resource_items[5].rarity_score, 0, 1),
             (3, items_data.resource_items[3].rarity_score, 2, 6),
             (2, items_data.resource_items[2].rarity_score, 3, 6),
             (4, items_data.resource_items[2].rarity_score, 3, 6)
+
         ],
         special_pool=[],
         max_items=12,

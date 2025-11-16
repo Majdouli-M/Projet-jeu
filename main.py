@@ -912,7 +912,11 @@ while running:
                     chosen_room_id_image = game_state.rooms_on_offer_images[game_state.inventory_indicator_pos+1] # image de la room que le joueur a choisi         
 
                     # 2. generation aleatoire de l'etat des portes en fonction du niveau en y du joueur sur la map/grille
-                    difficulty_scaled_doors(chosen_room_id_portes,target_y) # genere l'etat de chaque porte ( a l'exception de celle qu'on ouvre qui doit etre ouverte)
+
+
+                    if chosen_room_id != "h4": #les portes du corridor sont toujours ouvertes
+
+                        difficulty_scaled_doors(chosen_room_id_portes,target_y) # genere l'etat de chaque porte ( a l'exception de celle qu'on ouvre qui doit etre ouverte)
                     
 
 
@@ -953,13 +957,20 @@ while running:
                             
             # ------------------------------------------------------------------
             # CAS 2: Le joueur est dans l'inventaire pour selectionner des items
-            # ------------------------------------------------------------------
+            # ------------------------------------------------------------------z
 
             elif game_state.items_selection:  
 
-                if len(game_state.items_tirees) == 0: #si il y a eu une selection et que le joueur n'a pas eu de chance (rien eu) -> on quitte le menu de selection
-
+                if len(game_state.items_tirees) == 1: #si il y a eu une selection et que le joueur n'a pas eu de chance (rien eu) -> on quitte le menu de selection
+                    
                     game_state.items_selection = False
+                    if game_state.inventory["Pas"] <= 0: #activation flag game_lost si on a plus de pas apres avoir selectionné tous les objets
+                        game_state.game_lost = True
+                        
+                    
+                    
+
+                        
                     
                     
                 else:
@@ -977,6 +988,7 @@ while running:
                         if game_state.items_indicator_pos < (len(game_state.items_tirees)):
 
                             game_state.items_indicator_pos += 1   
+                        print(game_state.items_indicator_pos)
                             
 
                         
@@ -985,6 +997,10 @@ while running:
                         
                         if game_state.items_indicator_pos == len(game_state.items_tirees): # si on selectionne "Leave"
                             game_state.items_selection = False
+                            
+                            if game_state.inventory["Pas"] <= 0: #activation flag game_lost si on a plus de pas apres avoir quitté le menu de selection items
+                                game_state.game_lost = True
+
                             break
 
 
@@ -1205,6 +1221,7 @@ while running:
                             if (game_state.player_y,game_state.player_x) not in game_state.visited_coords: 
                                 
                                 game_state.items_tirees = tirage_items() # si la map n'a jamais été tirée on fait un tirage d'objets
+                                game_state.items_tirees 
                                 game_state.items_indicator_pos = 0
                                 if len(game_state.items_tirees) > 0: # si qqch a été tiré
 
@@ -1222,11 +1239,11 @@ while running:
 
                             
 
-                        if game_state.inventory["Pas"] < 0 and game_state.items_selection == False :
+                        if game_state.inventory["Pas"] <= 0 and game_state.items_selection == False :
                             game_state.game_lost = True 
-                            print(game_state.game_lost)
+                            
                             break
-                        if game_state.player_x == 2 and game_state.player_y == 0:
+                        elif game_state.player_x == 2 and game_state.player_y == 0:
                             game_state.game_won = True
                             break
                         
@@ -1277,10 +1294,17 @@ while running:
         ui_rect = pygame.Rect(GRID_PIXEL_WIDTH, 0, UI_PIXEL_WIDTH, WINDOW_HEIGHT)
         pygame.draw.rect(screen, RED, ui_rect)
 
+        game_lost_text = text_font.render("GAME OVER", True, BLACK)     
+        screen.blit(game_lost_text, (1030, 500))
+
+
     elif game_state.game_won == True: #si gagné on affiche l'inventaire en vert
 
         ui_rect = pygame.Rect(GRID_PIXEL_WIDTH, 0, UI_PIXEL_WIDTH, WINDOW_HEIGHT)
         pygame.draw.rect(screen, GREEN, ui_rect)
+
+        game_won_text = text_font.render("YOU WIN", True, BLACK)     
+        screen.blit(game_won_text, (1030, 500))
 
 
 
