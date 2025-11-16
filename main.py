@@ -1295,16 +1295,16 @@ while running:
         pygame.draw.rect(screen, RED, ui_rect)
 
         game_lost_text = text_font.render("GAME OVER", True, BLACK)     
-        screen.blit(game_lost_text, (1030, 500))
+        screen.blit(game_lost_text, (WINDOW_WIDTH-1.2*UI_PIXEL_WIDTH//2, 500))
 
 
     elif game_state.game_won == True: #si gagné on affiche l'inventaire en vert
 
-        ui_rect = pygame.Rect(GRID_PIXEL_WIDTH, 0, UI_PIXEL_WIDTH, WINDOW_HEIGHT)
+        ui_rect = pygame.Rect(GRID_PIXEL_WIDTH, 0, UI_PIXEL_WIDTH, WINDOW_HEIGHT//2)
         pygame.draw.rect(screen, GREEN, ui_rect)
 
         game_won_text = text_font.render("YOU WIN", True, BLACK)     
-        screen.blit(game_won_text, (1030, 500))
+        screen.blit(game_won_text, (WINDOW_WIDTH-1.2*UI_PIXEL_WIDTH//2, WINDOW_HEIGHT//2))
 
 
 
